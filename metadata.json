@@ -1,0 +1,6 @@
+{
+  "name": "Evolia: El Reino Menor",
+  "description": "Juego y gestor táctico 4X de colonias subterráneas con mapa de estrato, nido, árbol genético, castas y diplomacia de feromonas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
