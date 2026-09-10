@@ -18,10 +18,23 @@ const navItems: NavItem[] = [
 ];
 
 export const Sidebar: React.FC = () => {
-  const { currentScreen, setCurrentScreen, addToast } = useGame();
+  const { currentScreen, setCurrentScreen, sidebarMobileOpen, setSidebarMobileOpen, addToast } = useGame();
 
   return (
-    <aside className="fixed left-0 top-20 bottom-0 w-64 bg-[#1f1b19] z-40 flex flex-col p-4 border-r border-[#393431] shadow-[4px_0_20px_rgba(0,0,0,0.55)]">
+    <>
+      {/* Backdrop on mobile */}
+      {sidebarMobileOpen && (
+        <div
+          className="fixed inset-0 top-20 bg-black/70 z-35 lg:hidden backdrop-blur-xs transition-opacity"
+          onClick={() => setSidebarMobileOpen(false)}
+        />
+      )}
+
+      <aside
+        className={`fixed left-0 top-20 bottom-0 w-64 bg-[#1f1b19] z-40 flex flex-col p-4 border-r border-[#393431] shadow-[4px_0_20px_rgba(0,0,0,0.55)] transition-transform duration-300 ease-in-out ${
+          sidebarMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        }`}
+      >
       <div className="px-3 py-1 mb-2">
         <span className="text-[11px] font-bold text-[#a88a81] uppercase tracking-wider">
           Cámaras y Sistemas
@@ -71,5 +84,6 @@ export const Sidebar: React.FC = () => {
         <span className="text-[10px] text-[#a88a81]">Postura activa: +1 larva / ciclo</span>
       </div>
     </aside>
+    </>
   );
 };

@@ -46,12 +46,15 @@ interface GameContextType {
   maxActionPoints: number;
   isPassingTurn: boolean;
   passTurn: () => void;
+  consumeActionPoint: (cost?: number) => boolean;
 
   // Drawers
   colonyDrawerOpen: boolean;
   toggleColonyDrawer: () => void;
   buildingsDrawerOpen: boolean;
   toggleBuildingsDrawer: () => void;
+  sidebarMobileOpen: boolean;
+  setSidebarMobileOpen: (open: boolean) => void;
 
   // Resources
   resources: ColonyResources;
@@ -116,6 +119,7 @@ interface GameContextType {
   addToast: (title: string, message: string, type?: ToastMessage['type']) => void;
   removeToast: (id: string) => void;
   logs: LogEntry[];
+  addLog: (text: string, type?: LogEntry['type']) => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -132,6 +136,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const [colonyDrawerOpen, setColonyDrawerOpen] = useState<boolean>(true);
   const [buildingsDrawerOpen, setBuildingsDrawerOpen] = useState<boolean>(true);
+  const [sidebarMobileOpen, setSidebarMobileOpen] = useState<boolean>(false);
 
   const [resources, setResources] = useState<ColonyResources>(initialResources);
   const [rivals, setRivals] = useState<ColonyRival[]>(initialRivals);
@@ -203,6 +208,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLogs((prev) => [newEntry, ...prev]);
   };
 
+  const consumeActionPoint = (cost: number = 1): boolean => {
+    if (actionPoints < cost) {
+      addToast('Sin AP Suficientes', `Esta acción requiere ${cost} AP. Pasa el turno para restaurar tus acciones.`, 'warning');
+      return false;
+    }
+    setActionPoints((prev) => Math.max(0, prev - cost));
+    return true;
+  };
+
   const toggleSoundMuted = () => {
     const next = !soundMuted;
     setSoundMutedState(next);
@@ -213,6 +227,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const setCurrentScreen = (screen: ScreenId) => {
     playTapSound();
     setCurrentScreenState(screen);
+    setSidebarMobileOpen(false);
   };
 
   const toggleColonyDrawer = () => {
@@ -558,10 +573,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         maxActionPoints,
         isPassingTurn,
         passTurn,
+        consumeActionPoint,
         colonyDrawerOpen,
         toggleColonyDrawer,
         buildingsDrawerOpen,
         toggleBuildingsDrawer,
+        sidebarMobileOpen,
+        setSidebarMobileOpen,
         resources,
         updateResource,
         quickTrade,
@@ -602,6 +620,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         addToast,
         removeToast,
         logs,
+        addLog,
       }}
     >
       {children}

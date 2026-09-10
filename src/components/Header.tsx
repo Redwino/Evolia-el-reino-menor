@@ -15,6 +15,8 @@ export const Header: React.FC = () => {
     toggleSoundMuted,
     setLogModalOpen,
     setRulesModalOpen,
+    sidebarMobileOpen,
+    setSidebarMobileOpen,
     addToast
   } = useGame();
 
@@ -22,7 +24,19 @@ export const Header: React.FC = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#1f1b19]/95 backdrop-blur-xl border-b border-[#393431] shadow-[0_4px_24px_rgba(0,0,0,0.7)] h-20">
       <div className="h-full w-full px-4 md:px-6 flex items-center justify-between gap-3">
         {/* Left: Brand & Turn Status */}
-        <div className="flex items-center gap-4 shrink-0">
+        <div className="flex items-center gap-3 md:gap-4 shrink-0">
+          <button
+            type="button"
+            onClick={() => setSidebarMobileOpen(!sidebarMobileOpen)}
+            className="lg:hidden w-10 h-10 rounded-full bg-[#2e2927] hover:bg-[#3d3836] text-[#eae1dd] flex items-center justify-center border border-[#393431] active:scale-95 transition-transform"
+            aria-label="Abrir menú de navegación"
+            title="Menú de Navegación"
+          >
+            <span className="material-symbols-outlined text-[22px]">
+              {sidebarMobileOpen ? 'close' : 'menu'}
+            </span>
+          </button>
+
           <div 
             className="flex items-center gap-2.5 group cursor-pointer"
             onClick={() => addToast('Evolia', 'El Reino Menor: Gestor táctico 4X subterráneo.')}

@@ -2,21 +2,19 @@ import React from 'react';
 import { useGame } from '../../context/GameContext';
 
 export const AnthillScreen: React.FC = () => {
-  const { resources, updateResource, addToast, actionPoints } = useGame();
+  const { resources, updateResource, addToast, consumeActionPoint, addLog } = useGame();
 
   const handleExcavate = () => {
-    if (actionPoints < 1) {
-      addToast('Sin AP', 'Excavar requiere 1 Acción (-1 AP).', 'warning');
-      return;
-    }
     if (resources.material < 3) {
       addToast('Falta Material', 'Excavar una nueva cámara requiere 3 Materiales.', 'warning');
       return;
     }
+    if (!consumeActionPoint(1)) return;
     updateResource('material', -3);
     updateResource('poblacionMax', 2);
     updateResource('puntosVictoria', 1);
-    addToast('¡Nueva Cámara Excavada!', 'Galería expandida en estrato profundo: +2 Capacidad de Población, +1 PV.', 'success');
+    addToast('¡Nueva Cámara Excavada!', 'Galería expandida en estrato profundo: +2 Capacidad de Población, +1 PV (-1 AP).', 'success');
+    addLog('Nueva galería excavada en el estrato profundo (+2 Capacidad de Población, +1 PV).', 'action');
   };
 
   const handleFeedQueen = () => {

@@ -26,26 +26,24 @@ export const TacticalMapScreen: React.FC = () => {
     openCombatModal,
     passTurn,
     actionPoints,
+    consumeActionPoint,
+    addLog,
     quickTrade,
     updateResource,
     addToast
   } = useGame();
 
   const handleMoveUnits = () => {
-    if (actionPoints < 1) {
-      addToast('Sin AP', 'Requiere 1 Punto de Acción para marchar.', 'warning');
-      return;
-    }
+    if (!consumeActionPoint(1)) return;
     addToast('Marcha Táctica', `Escuadrón movilizado hacia ${selectedNode.name}. Posición asegurada (-1 AP).`, 'primary');
+    addLog(`Marcha táctica: Escuadrón avanzado a ${selectedNode.name} (-1 AP).`, 'action');
   };
 
   const handleExploreNode = () => {
-    if (actionPoints < 1) {
-      addToast('Sin AP', 'Requiere 1 Punto de Acción para explorar.', 'warning');
-      return;
-    }
+    if (!consumeActionPoint(1)) return;
     updateResource('material', 2);
-    addToast('Exploración Exitosa', `Suelo rastreado en ${selectedNode.name}: +2 Materiales añadidos.`, 'success');
+    addToast('Exploración Exitosa', `Suelo rastreado en ${selectedNode.name}: +2 Materiales añadidos (-1 AP).`, 'success');
+    addLog(`Exploración en ${selectedNode.name}: recolectados +2 Materiales (-1 AP).`, 'action');
   };
 
   return (
