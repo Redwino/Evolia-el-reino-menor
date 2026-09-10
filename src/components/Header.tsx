@@ -15,6 +15,7 @@ export const Header: React.FC = () => {
     toggleSoundMuted,
     setLogModalOpen,
     setRulesModalOpen,
+    setTestModalOpen,
     sidebarMobileOpen,
     setSidebarMobileOpen,
     addToast
@@ -149,6 +150,16 @@ export const Header: React.FC = () => {
               title="Reglamento y Opciones del Tablero"
             >
               <span className="material-symbols-outlined text-[18px]">menu_book</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setTestModalOpen(true)}
+              className="px-2.5 h-9 rounded-full flex items-center gap-1 bg-[#2e2320] text-[#ffb59d] hover:bg-[#3d2f2b] border border-[#f06536]/40 hover:border-[#f06536] hover:scale-105 active:scale-95 transition-all text-xs font-bold"
+              title="Banco de Pruebas Táctico (Sandbox y Despliegue Web)"
+            >
+              <span className="material-symbols-outlined text-[16px] text-[#f06536]">science</span>
+              <span className="hidden sm:inline">Test</span>
             </button>
           </div>
 

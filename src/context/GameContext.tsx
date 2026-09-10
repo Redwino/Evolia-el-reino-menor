@@ -28,6 +28,7 @@ import {
   playChitSound, 
   playTurnPassSound, 
   playVictorySound, 
+  playDiceRollSound,
   setSoundMuted, 
   getSoundMuted 
 } from '../utils/audio';
@@ -104,11 +105,21 @@ interface GameContextType {
   legions: LegionSquad[];
   updateLegionMorale: (legionId: string, delta: number) => void;
 
-  // Modals (Log & Rules)
+  // Modals (Log & Rules & Test Bench)
   logModalOpen: boolean;
   setLogModalOpen: (open: boolean) => void;
   rulesModalOpen: boolean;
   setRulesModalOpen: (open: boolean) => void;
+  testModalOpen: boolean;
+  setTestModalOpen: (open: boolean) => void;
+
+  // Sandbox / Test Bench Actions
+  boostResourcesForTest: () => void;
+  addAPForTest: (amount?: number) => void;
+  unlockAllMutationsForTest: () => void;
+  triggerInvasionForTest: () => void;
+  advanceSeasonForTest: () => void;
+  resetGameForTest: () => void;
 
   // Audio Mute State
   soundMuted: boolean;
@@ -157,6 +168,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [combatModalOpen, setCombatModalOpen] = useState<boolean>(false);
   const [logModalOpen, setLogModalOpen] = useState<boolean>(false);
   const [rulesModalOpen, setRulesModalOpen] = useState<boolean>(false);
+  const [testModalOpen, setTestModalOpen] = useState<boolean>(false);
   const [soundMuted, setSoundMutedState] = useState<boolean>(false);
 
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
@@ -560,6 +572,67 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, 450);
   };
 
+  const boostResourcesForTest = () => {
+    playChitSound();
+    setResources((prev) => ({
+      ...prev,
+      alimento: Math.min(prev.alimentoMax, prev.alimento + 25),
+      agua: Math.min(prev.aguaMax, prev.agua + 25),
+      material: Math.min(prev.materialMax, prev.material + 25),
+      poblacionLibre: prev.poblacionLibre + 5,
+    }));
+    setActionPoints(5);
+    setDnaPoints((dna) => dna + 10);
+    addToast('Modo Prueba: Recursos Recargados', '+25 Alimento, +25 Agua, +25 Material, +10 ADN y 5 AP otorgados.', 'success');
+    addLog('Herramienta de Prueba: Recursos masivos y 5 AP cargados al Nido.', 'action');
+  };
+
+  const addAPForTest = (amount: number = 3) => {
+    playTapSound();
+    setActionPoints((ap) => ap + amount);
+    addToast('AP Recargados', `+${amount} Puntos de Acción agregados para pruebas.`, 'primary');
+  };
+
+  const unlockAllMutationsForTest = () => {
+    playVictorySound();
+    setMutations((prev) => prev.map((m) => ({ ...m, unlocked: true })));
+    setResources((prev) => ({
+      ...prev,
+      puntosVictoria: prev.puntosVictoria + 5,
+    }));
+    addToast('Genoma Completo', 'Todas las mutaciones desbloqueadas para testeo (+5 PV).', 'success');
+    addLog('Herramienta de Prueba: Árbol genético completo mutado para testeo.', 'action');
+  };
+
+  const triggerInvasionForTest = () => {
+    playDiceRollSound();
+    openCombatModal();
+    addToast('¡Alerta de Incursión!', 'Patrulla de Avispones Negras detectada asaltando el perímetro.', 'warning');
+    addLog('¡Combate de Prueba! Asalto de choque contra patrulla de superficie.', 'combat');
+  };
+
+  const advanceSeasonForTest = () => {
+    passTurn();
+  };
+
+  const resetGameForTest = () => {
+    playTurnPassSound();
+    setResources(initialResources);
+    setMutations(initialMutations);
+    setCastes(initialCastes);
+    setLegions(initialLegions);
+    setChambers(initialChambers);
+    setRivals(initialRivals);
+    setActionPoints(initialResources.poblacionLibre > 0 ? 3 : 3);
+    setTurn(1);
+    setRound(1);
+    setSeason('Primavera');
+    setYear(1);
+    setDnaPoints(6);
+    addToast('Partida Reiniciada', 'El nido ha retornado a su estado inicial de Primavera.', 'primary');
+    addLog('Herramienta de Prueba: La colonia ha reiniciado su simulador al Año 1.', 'season');
+  };
+
   return (
     <GameContext.Provider
       value={{
@@ -614,6 +687,14 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setLogModalOpen,
         rulesModalOpen,
         setRulesModalOpen,
+        testModalOpen,
+        setTestModalOpen,
+        boostResourcesForTest,
+        addAPForTest,
+        unlockAllMutationsForTest,
+        triggerInvasionForTest,
+        advanceSeasonForTest,
+        resetGameForTest,
         soundMuted,
         toggleSoundMuted,
         toasts,

@@ -7,6 +7,7 @@ import { ToastContainer } from './components/ToastContainer';
 import { CombatModal } from './components/CombatModal';
 import { LogModal } from './components/LogModal';
 import { RulesModal } from './components/RulesModal';
+import { TestModal } from './components/TestModal';
 import { TacticalMapScreen } from './components/screens/TacticalMapScreen';
 import { AnthillScreen } from './components/screens/AnthillScreen';
 import { GeneticTreeScreen } from './components/screens/GeneticTreeScreen';
@@ -59,6 +60,7 @@ const AppContent: React.FC = () => {
       <CombatModal />
       <LogModal />
       <RulesModal />
+      <TestModal />
 
       {/* In-Game Notifications Toast Stack */}
       <ToastContainer />
