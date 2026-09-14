@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="es" class="dark">
+<!DOCTYPE html>
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,16 +7,902 @@
     <meta name="description" content="Juego y gestor táctico 4X de colonias subterráneas con mapa de estrato, nido, árbol genético, castas y diplomacia de feromonas." />
     <meta property="og:title" content="Evolia: El Reino Menor" />
     <meta property="og:description" content="Juego y gestor táctico 4X de colonias subterráneas con mapa de estrato, nido, árbol genético, castas y diplomacia de feromonas." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400..700,0..1,-50..200" rel="stylesheet" />
+
+    <!-- Google Fonts & Material Symbols (Tipografía Lúdica / Caricaturesca y Legible) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800;900&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <!-- Estilos CSS3 Vanilla Relativos -->
+    <link rel="stylesheet" href="./style.css" />
   </head>
-  <body class="bg-[#161311] text-[#eae1dd] select-none antialiased overflow-x-hidden">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+  <body>
+    <!-- 1. BARRA SUPERIOR (HEADER) -->
+    <header class="app-header" id="app-header">
+      <!-- Marca e Identidad -->
+      <div class="brand-section">
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Abrir Menú">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <div class="brand-badge">
+          <div class="brand-icon">
+            <span class="material-symbols-outlined">pest_control</span>
+          </div>
+          <div class="brand-titles">
+            <h1>Evolia</h1>
+            <span>El Reino Menor · 4X</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tira de Recursos del Nido -->
+      <div class="resources-bar" id="resources-bar">
+        <div class="resource-pill res-food" title="Alimento de la Colonia">
+          <span class="material-symbols-outlined res-icon">restaurant</span>
+          <span id="res-food">16/50</span>
+        </div>
+        <div class="resource-pill res-water" title="Gotas de Agua Dulce">
+          <span class="material-symbols-outlined res-icon">water_drop</span>
+          <span id="res-water">12/40</span>
+        </div>
+        <div class="resource-pill res-material" title="Materiales de Construcción">
+          <span class="material-symbols-outlined res-icon">grain</span>
+          <span id="res-mat">14/50</span>
+        </div>
+        <div class="resource-pill res-pop" title="Población (Total y Libre)">
+          <span class="material-symbols-outlined res-icon">groups</span>
+          <span id="res-pop">18/30 (4 lib.)</span>
+        </div>
+        <div class="resource-pill res-dna" title="ADN y Potencial Evolutivo">
+          <span class="material-symbols-outlined res-icon">biotech</span>
+          <span id="res-dna">6 ADN</span>
+        </div>
+        <div class="resource-pill res-vp" id="res-vp-pill" title="Puntos de Victoria Totales (Haz clic para ver el desglose)">
+          <span class="material-symbols-outlined res-icon">emoji_events</span>
+          <span id="res-vp">0 PV</span>
+        </div>
+      </div>
+
+      <!-- Acciones de Cabecera: AP, Pasar Turno y Utilidades -->
+      <div class="header-actions">
+        <!-- Puntos de Acción (AP) -->
+        <div class="ap-indicator" title="Puntos de Acción disponibles en este turno">
+          <span class="material-symbols-outlined" style="font-size:16px;color:#f06536;">bolt</span>
+          <span id="header-ap-text">3/3 AP</span>
+          <div class="ap-dots" id="header-ap-dots"></div>
+        </div>
+
+        <!-- Indicador de Turno General y Temporizador Único -->
+        <div class="turn-turn-badge player-turn" id="turn-active-badge" title="Turno del jugador en curso">
+          <span class="turn-dot" id="turn-active-dot"></span>
+          <span id="turn-active-label">Tu Turno (Enjambre Alfa)</span>
+        </div>
+
+        <!-- Temporizador de Turno Único (90s) con Salto Automático -->
+        <div class="turn-timer" id="turn-timer" title="Tiempo de turno restante (Salto automático a 00:00)">
+          <span class="material-symbols-outlined timer-icon">timer</span>
+          <span id="turn-timer-text">01:30</span>
+        </div>
+
+        <!-- Botón Pasar Turno -->
+        <button type="button" class="btn-pass-turn" id="btn-pass-turn">
+          <span class="material-symbols-outlined">fast_forward</span>
+          <span>Pasar Turno</span>
+        </button>
+
+        <!-- Botón Banco de Pruebas (Test Mode) -->
+        <button type="button" class="btn-test" id="btn-open-test" title="Banco de Pruebas y Sandbox">
+          <span class="material-symbols-outlined">science</span>
+          <span>Test</span>
+        </button>
+
+        <!-- Botón Audio Mute -->
+        <button type="button" class="btn-icon-square" id="btn-toggle-sound" title="Alternar Sonido">
+          <span class="material-symbols-outlined" id="sound-icon">volume_up</span>
+        </button>
+
+        <!-- Botón Bitácora -->
+        <button type="button" class="btn-icon-square" id="btn-open-logs" title="Ver Bitácora de Colonia">
+          <span class="material-symbols-outlined">receipt_long</span>
+        </button>
+
+        <!-- Botón Reglas -->
+        <button type="button" class="btn-icon-square" id="btn-open-rules" title="Reglamento del Simulador">
+          <span class="material-symbols-outlined">menu_book</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. BARRA LATERAL (SIDEBAR) -->
+    <aside class="app-sidebar" id="app-sidebar">
+      <div>
+        <div class="nav-category-title">Cámaras y Sistemas</div>
+        <ul class="nav-menu">
+          <li>
+            <button type="button" class="nav-item active" data-screen="map">
+              <span class="material-symbols-outlined">explore</span>
+              <span>Mi Colonia (Privado)</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item" data-screen="nest">
+              <span class="material-symbols-outlined">home</span>
+              <span>El Hormiguero</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item" data-screen="genetics">
+              <span class="material-symbols-outlined">biotech</span>
+              <span>Árbol Genético</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item" data-screen="castes">
+              <span class="material-symbols-outlined">shield</span>
+              <span>Castas y Legiones</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item" data-screen="rivals">
+              <span class="material-symbols-outlined">groups</span>
+              <span>Inteligencia y Rivales</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Marcador Lateral de Puntos de Victoria (PV) en Tiempo Real -->
+      <div class="sidebar-pv-scoreboard" id="sidebar-pv-scoreboard">
+        <div class="scoreboard-title">
+          <span>Dominación (PV en Vivo)</span>
+          <span class="material-symbols-outlined" style="font-size:16px;">emoji_events</span>
+        </div>
+        <div id="pv-scoreboard-list" style="display:flex;flex-direction:column;gap:0.4rem;">
+          <!-- Dinámico en app.js -->
+        </div>
+      </div>
+
+      <!-- Widget Estacional -->
+      <div class="sidebar-season-widget">
+        <span class="material-symbols-outlined" style="color:#f06536;font-size:24px;">thermostat</span>
+        <div class="season-name" id="sidebar-season-name">Primavera</div>
+        <div class="season-desc" id="sidebar-season-desc">Año 1 · Ronda 1</div>
+      </div>
+    </aside>
+
+    <!-- 3. ÁREA PRINCIPAL -->
+    <main class="app-main" id="app-main">
+      <!-- Banner de Turno Rival en Curso (Informa y restringe acciones activas del jugador) -->
+      <div class="turn-waiting-banner" id="turn-waiting-banner" style="display:none;margin-bottom:1rem;">
+        <div class="turn-waiting-left">
+          <span class="material-symbols-outlined spin-hourglass" style="color:#f06536;font-size:26px;">hourglass_top</span>
+          <div>
+            <div style="font-weight:700;color:#ffb59d;" id="turn-waiting-title">Turno de: Enjambre Carmesí</div>
+            <div style="font-size:0.75rem;color:#d1c2ba;" id="turn-waiting-desc">Es el turno del rival. Tus acciones están en pausa mientras la IA planifica y mueve sus tropas. Puedes examinar libremente tu colonia y tu mapa para diseñar tu estrategia.</div>
+          </div>
+        </div>
+        <button type="button" class="btn-skip-ai" id="btn-skip-ai-turn" title="Acelerar el turno simulado de la IA">
+          <span class="material-symbols-outlined" style="font-size:16px;">fast_forward</span>
+          <span>Acelerar IA</span>
+        </button>
+      </div>
+
+      <!-- Notificación en Tiempo Real de Actividad de Rival -->
+      <div class="rival-live-banner" id="rival-live-banner" style="display:none;margin-bottom:1rem;">
+        <div class="banner-left">
+          <div class="pulse-dot"></div>
+          <span class="material-symbols-outlined" style="color:#f06536;font-size:20px;">visibility</span>
+          <span id="rival-live-text">Inteligencia: El jugador Enjambre Carmesí está construyendo...</span>
+        </div>
+        <span class="badge-tag" style="font-size:0.68rem;background:rgba(0,0,0,0.5);">Actividad en Vivo</span>
+      </div>
+
+      <!-- Barra Ticker de Estado -->
+      <div class="match-status-bar">
+        <div class="status-tag">
+          <span class="material-symbols-outlined text-[#f06536]">wb_sunny</span>
+          <span>Ciclo Natural: <strong id="ticker-season" style="color:#ffb59d;">Primavera - Año 1</strong></span>
+        </div>
+        <div style="display:flex;gap:0.75rem;align-items:center;">
+          <span class="badge-tag" id="ticker-turn">Turno 1</span>
+          <span class="badge-tag" id="ticker-vp" style="cursor:pointer;" title="Ver desglose de PV">0 PV</span>
+        </div>
+      </div>
+
+      <!-- PANTALLA 1: MAPA TÁCTICO DE ESTRATO (MAPA PRIVADO Y MANO DE CARTAS) -->
+      <section class="view-screen active" id="screen-map">
+        <!-- Banner de Soberanía y Privacidad Territorial -->
+        <div class="privacy-banner">
+          <span class="material-symbols-outlined">lock</span>
+          <div style="flex:1;">
+            <strong style="color:#eae1dd;">Mapa Táctico de Estrato (100% Privado):</strong>
+            <span> Tu colonia está compuesta por sectores modulares de terreno compatibles con las cartas de estrato. Solo serás seleccionable para ataque por los rivales si posees tropas desplegadas.</span>
+          </div>
+          <span class="badge-targetable" id="player-targetable-status">Elegible para Ataque: Sí (Tropas Desplegadas)</span>
+        </div>
+
+        <div class="grid-2col">
+          <!-- Tablero de Sectores Territoriales (Cartas de Terreno de la Colonia) -->
+          <div class="card" style="padding:1.25rem;">
+            <div class="card-header">
+              <span class="card-title">
+                <span class="material-symbols-outlined">grid_view</span>
+                <span>Sectores Territoriales de la Colonia</span>
+              </span>
+              <span style="font-size:0.75rem;color:#a39287;">Haz clic en un sector para seleccionarlo</span>
+            </div>
+            
+            <!-- Grid Modular de Sectores de la Colonia -->
+            <div class="colony-territory-board" id="colony-territory-board">
+              <!-- Renderizado dinámico en app.js -->
+            </div>
+          </div>
+
+          <!-- Inspector del Sector Seleccionado -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">
+                <span class="material-symbols-outlined">radar</span>
+                <span id="inspector-name">Hormiguero Central</span>
+              </span>
+              <span class="badge-tag" id="inspector-badge" style="background:#2a1f1a;color:#ffb59d;">Soberano</span>
+            </div>
+            <div class="node-inspector">
+              <p id="inspector-desc" style="font-size:0.75rem;color:#a39287;line-height:1.5;">
+                El corazón de la colonia subterránea.
+              </p>
+
+              <div class="inspector-stats">
+                <div class="inspector-stat-row">
+                  <span>Control Territorial:</span>
+                  <strong id="inspector-control" style="color:#ffb59d;">100%</strong>
+                </div>
+                <div class="inspector-stat-row">
+                  <span>Escuadrones Presentes:</span>
+                  <strong id="inspector-squads" style="color:#38bdf8;">6 Escuadrones</strong>
+                </div>
+                <div class="inspector-stat-row">
+                  <span>Rendimiento por Ciclo:</span>
+                  <strong id="inspector-yield" style="color:#8bc34a;">+4 Alimento, +2 Material</strong>
+                </div>
+                <div class="inspector-stat-row">
+                  <span>Cartas / Mejoras Activas:</span>
+                  <strong id="inspector-upgrades" style="color:#f59e0b;">Ninguna</strong>
+                </div>
+              </div>
+
+              <div class="action-btn-group">
+                <button type="button" class="btn-action" id="btn-inspector-march">
+                  <span>Marchar Escuadrón (+1 Tropa)</span>
+                  <span class="badge-tag">-1 AP</span>
+                </button>
+                <button type="button" class="btn-action" id="btn-inspector-gather">
+                  <span>Recolectar Recursos del Sector</span>
+                  <span class="badge-tag">-1 AP</span>
+                </button>
+                <button type="button" class="btn-action btn-primary-action" id="btn-inspector-combat">
+                  <span>Incursión Bélica (Dados T.E.G.)</span>
+                  <span class="material-symbols-outlined" style="font-size:16px;">casino</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ZONA TÁCTICA DE SUPERFICIE Y DESPLIEGUE DE CARTAS -->
+        <div class="tabletop-drop-zone" id="map-tactical-dropzone" data-drop-zone="map">
+          <div class="drop-zone-icon">
+            <span class="material-symbols-outlined">ads_click</span>
+          </div>
+          <div class="drop-zone-text">
+            <strong>Zona Táctica de Superficie (Mínimo: 1 PA)</strong>
+            <span>Arrastra cartas militares directamente sobre los Sectores para desplegar tropas, o suelta aquí cartas de Conversión o Estratagema.</span>
+          </div>
+          <span class="drop-zone-badge">Soltar Carta Aquí</span>
+        </div>
+      </section>
+
+      <!-- PANTALLA 2: EL HORMIGUERO (TABLERO FÍSICO DE LA COLONIA Y CÁMARAS) -->
+      <section class="view-screen" id="screen-nest">
+        <!-- Zona de Despliegue Táctico de Nido -->
+        <div class="tabletop-drop-zone" id="nest-tactical-dropzone" data-drop-zone="nest">
+          <div class="drop-zone-icon">
+            <span class="material-symbols-outlined">touch_app</span>
+          </div>
+          <div class="drop-zone-text">
+            <strong>Zona de Despliegue Subterráneo (Mínimo: 1 PA)</strong>
+            <span>Arrastra edificios directamente sobre las celdas adyacentes de la colonia, o suelta aquí cartas de Conversión o Investigación.</span>
+          </div>
+          <span class="drop-zone-badge">Soltar Carta Aquí</span>
+        </div>
+
+        <!-- Banner de Modo Colocación Física de Edificios -->
+        <div class="colony-placement-banner" id="colony-placement-banner" style="display:none;margin-bottom:1rem;">
+          <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+            <div class="placement-pulse-icon">
+              <span class="material-symbols-outlined" style="font-size:24px;color:#f06536;">foundation</span>
+            </div>
+            <div>
+              <div style="font-weight:800;color:#ffcaa3;font-size:0.92rem;" id="placement-card-title">Modo Construcción Activo: Cámara de Hongos</div>
+              <div style="font-size:0.75rem;color:#d1c2ba;margin-top:2px;" id="placement-card-instructions">
+                Haz clic en una celda iluminada contigua (adyacente) a un edificio ya existente para fijar la estructura vinculada al nido.
+              </div>
+              <div style="font-size:0.72rem;color:#bef264;margin-top:3px;" id="placement-card-costs">
+                Coste: 1 PA + 3 Materiales + 2 Agua
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn-action" id="btn-cancel-placement" style="border-color:#ef4444;color:#fca5a5;">
+            <span class="material-symbols-outlined" style="font-size:16px;">close</span>
+            <span>Cancelar Colocación</span>
+          </button>
+        </div>
+
+        <!-- Banner de Tránsito de Tropas en la Colonia -->
+        <div class="colony-transit-banner" id="colony-transit-banner" style="display:none;margin-bottom:1rem;">
+          <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+            <div class="placement-pulse-icon" style="background:#251810;border-color:#38bdf8;">
+              <span class="material-symbols-outlined" style="font-size:24px;color:#38bdf8;">alt_route</span>
+            </div>
+            <div>
+              <div style="font-weight:800;color:#bae6fd;font-size:0.92rem;" id="transit-origin-title">Tránsito de Tropas: Selecciona Destino</div>
+              <div style="font-size:0.75rem;color:#d1c2ba;margin-top:2px;" id="transit-instructions">
+                Mueve 1 tropa a un edificio adyacente conectado que no haya alcanzado su límite de albergue. No se permite libre tránsito sin galerías continuas.
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn-action" id="btn-cancel-transit" style="border-color:#ef4444;color:#fca5a5;">
+            <span class="material-symbols-outlined" style="font-size:16px;">close</span>
+            <span>Cancelar Tránsito</span>
+          </button>
+        </div>
+
+        <!-- Tablero Físico de la Colonia (Grid de Edificios Vinculados) -->
+        <div class="card" style="margin-bottom:1.25rem;">
+          <div class="card-header">
+            <div>
+              <span class="card-title">
+                <span class="material-symbols-outlined">grid_view</span>
+                <span>Tablero Físico de la Colonia (Edificios y Tránsito)</span>
+              </span>
+              <div style="font-size:0.72rem;color:#a39287;margin-top:2px;">
+                Los edificios deben construirse adyacentes a otro ya existente para quedar vinculados. Cada edificio tiene un límite de tropas que limita el tránsito interno.
+              </div>
+            </div>
+            <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+              <span class="badge-tag" id="colony-buildings-count" style="background:#2a1f18;color:#ffb59d;">3 Edificios Vinculados</span>
+              <span class="badge-tag" id="colony-troops-capacity" style="background:#1d2618;color:#bef264;">4/8 Tropas Albergadas</span>
+              <button type="button" class="btn-action" id="btn-feed-queen">
+                <span class="material-symbols-outlined" style="font-size:16px;">cookie</span>
+                <span>Nutrir Reina (-1 AP, 3 Alim)</span>
+              </button>
+              <button type="button" class="btn-action btn-primary-action" id="btn-excavate-chamber">
+                <span class="material-symbols-outlined" style="font-size:16px;">hardware</span>
+                <span>Excavar Galería (-1 AP, 3 Mat)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Cuadrícula Subterránea del Nido -->
+          <div class="colony-grid-wrapper">
+            <div class="colony-physical-grid" id="colony-physical-grid">
+              <!-- Renderizado dinámico en app.js (5x5 celdas con edificios y conexiones) -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Galerías y Cámaras del Nido -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">
+              <span class="material-symbols-outlined">home</span>
+              <span>Corte Transversal del Nido Subterráneo</span>
+            </span>
+            <span style="font-size:0.75rem;color:#a39287;">Mejora y profundiza las cámaras de la colonia</span>
+          </div>
+          <div class="chambers-grid" id="nest-chambers-grid"></div>
+        </div>
+      </section>
+
+      <!-- PANTALLA 3: ÁRBOL GENÉTICO -->
+      <section class="view-screen" id="screen-genetics">
+        <!-- Zona de Despliegue de Investigaciones Genómicas -->
+        <div class="tabletop-drop-zone" id="genetics-tactical-dropzone" data-drop-zone="genetics" style="border-color:#a855f7;">
+          <div class="drop-zone-icon" style="background:#3b1754;border-color:#9333ea;color:#d8b4fe;">
+            <span class="material-symbols-outlined">biotech</span>
+          </div>
+          <div class="drop-zone-text">
+            <strong style="color:#f3e8ff;">Altar de Asimilación Genómica (Mínimo: 1 PA)</strong>
+            <span style="color:#d8b4fe;">Arrastra aquí cartas de Investigación de tu mano para asimilar inmediatamente su mutación permanente (+1 PV).</span>
+          </div>
+          <span class="drop-zone-badge" style="border-color:#a855f7;color:#e9d5ff;">Asimilar Mutación</span>
+        </div>
+
+        <!-- Panel Superior de Resumen de Investigaciones Activas y Bonos Conseguidos -->
+        <div class="card" style="margin-bottom:1.25rem;border-color:rgba(168,85,247,0.3);">
+          <div class="card-header">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <span class="material-symbols-outlined" style="color:#c084fc;font-size:24px;">verified</span>
+              <div>
+                <span class="card-title" style="color:#e9d5ff;">Investigaciones Asimiladas y Bonificaciones Activas</span>
+                <div style="font-size:0.72rem;color:#c084fc;margin-top:2px;">
+                  Regla Genómica: Las investigaciones son de 1 única investigación y NO son acumulables para evitar acumulación de efectos.
+                </div>
+              </div>
+            </div>
+            <span class="badge-tag" id="genetics-active-badge" style="background:#2e1840;color:#e9d5ff;border:1px solid #7e22ce;">
+              0 Bonos Activos
+            </span>
+          </div>
+
+          <!-- Lista de Bonos Activos en Tiempo Real -->
+          <div class="active-bonuses-grid" id="genetics-active-bonuses-list">
+            <!-- Dinámico en app.js -->
+          </div>
+        </div>
+
+        <!-- Catálogo de Mutaciones e Investigaciones Disponibles -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">
+              <span class="material-symbols-outlined">biotech</span>
+              <span>Evolución y Árbol Genómico</span>
+            </span>
+            <span style="font-size:0.75rem;color:#a855f7;">Acumula ADN explorando y venciendo en combate · Cada mutación es única</span>
+          </div>
+          <div class="mutations-grid" id="genetics-grid"></div>
+        </div>
+      </section>
+
+      <!-- PANTALLA 4: CASTAS Y LEGIONES -->
+      <section class="view-screen" id="screen-castes">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">
+              <span class="material-symbols-outlined">shield</span>
+              <span>Fuerzas del Enjambre y Metamorfosis</span>
+            </span>
+            <span style="font-size:0.75rem;color:#a39287;">Convierte obreras libres en castas especializadas</span>
+          </div>
+          <div class="castes-grid" id="castes-grid"></div>
+        </div>
+      </section>
+
+      <!-- PANTALLA 5: INTELIGENCIA Y RIVALES (NIEBLA ESTRATÉGICA) -->
+      <section class="view-screen" id="screen-rivals">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">
+              <span class="material-symbols-outlined">groups</span>
+              <span>Inteligencia de Enjambres Rivales</span>
+            </span>
+            <span style="font-size:0.75rem;color:#38bdf8;">Niebla Estratégica: Mapas de colonias 100% privados</span>
+          </div>
+          
+          <div class="privacy-banner" style="margin-bottom:1.25rem;">
+            <span class="material-symbols-outlined">visibility_off</span>
+            <div>
+              <strong style="color:#eae1dd;">Estrategias Ocultas y Privacidad:</strong>
+              <span> Cada jugador gestiona su territorio de forma privada y no conectada. Como estratega, solo puedes observar sus reservas genéricas, AP restantes, tiempo de turno (90s), población global sin discriminación por zona, y si poseen tropas disponibles para incursión.</span>
+            </div>
+          </div>
+
+          <div class="rivals-grid" id="rivals-cards-container">
+            <!-- Renderizado dinámico de tarjetas de rivales -->
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           DOCK UNIVERSAL DE MANO DE CARTAS (ESTILO HEARTHSTONE / PEQUEÑAS GRANDES MAZMORRAS)
+           ========================================================= -->
+      <section class="tabletop-hand-dock" id="tabletop-hand-dock">
+        <!-- Barra de Control y Cabecera de la Mano con Estilo Mesa de Cartas -->
+        <div class="hand-dock-header">
+          <div class="hand-dock-header-left">
+            <button type="button" class="btn-toggle-hand" id="btn-toggle-hand-dock" title="Minimizar / Desplegar Mano">
+              <span class="material-symbols-outlined" id="hand-toggle-icon">expand_more</span>
+              <span id="hand-toggle-label">Ocultar Mano</span>
+            </button>
+            <div class="hand-dock-title">
+              <span class="material-symbols-outlined hand-title-icon">style</span>
+              <span>Atril de Cartas Tácticas</span>
+            </div>
+            <span class="hand-dock-hint">
+              <span class="material-symbols-outlined" style="font-size:15px;color:#bef264;">pan_tool_alt</span>
+              <span>Arrastra al tapete o haz clic para jugar (1 PA mín.)</span>
+            </span>
+          </div>
+
+          <div class="hand-dock-header-right">
+            <span class="badge-tag comic-badge-deck" id="hand-deck-counter">🎴 Mazo: 24</span>
+            <span class="badge-tag comic-badge-hand" id="hand-cards-counter">🖐️ En Mano: 3/5</span>
+            <span class="badge-tag comic-badge-season" id="hand-season-limit-badge">Límite Fin Turno: 5</span>
+            <span class="badge-tag comic-badge-discard" id="hand-discard-counter">🗑️ Descarte: 0</span>
+            <button type="button" class="btn-action btn-cartoon-draw" id="btn-draw-card" title="Robar 1 carta del mazo gastando 1 PA">
+              <span class="material-symbols-outlined" style="font-size:16px;">add_box</span>
+              <span>Robar Carta</span>
+              <span class="badge-tag">-1 AP</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Alerta interactiva de exceso de cartas en mano al acercarse el fin de turno -->
+        <div class="hand-limit-alert" id="hand-limit-alert" style="display:none;margin:0.5rem 1rem 0 1rem;">
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <span class="material-symbols-outlined" style="color:#f59e0b;font-size:20px;">warning</span>
+            <span id="hand-limit-alert-text">Exceso de cartas en mano. Al terminar el turno el límite es de 5 cartas (7 en Otoño).</span>
+          </div>
+          <button type="button" class="btn-action" id="btn-open-discard-from-alert" style="padding:0.25rem 0.6rem;font-size:0.72rem;background:#38241b;border-color:#f59e0b;color:#fde68a;">
+            Descartar Exceso
+          </button>
+        </div>
+
+        <!-- Estación de Mesa: Mazo Físico 3D + Riel de Mano + Pila de Descartes -->
+        <div class="tabletop-board-deck-row">
+          <!-- Mazo de Robo 3D Físico -->
+          <div class="physical-deck-container" id="physical-deck-draw" title="¡Haz clic en el Mazo para robar una carta! (-1 PA)">
+            <div class="physical-deck-stack">
+              <div class="deck-card-layer layer-deep"></div>
+              <div class="deck-card-layer layer-mid"></div>
+              <div class="deck-card-face-top">
+                <div class="card-back-pattern">
+                  <div class="card-back-sigil">
+                    <span class="material-symbols-outlined">pest_control</span>
+                  </div>
+                  <span class="card-back-label">EVOLIA</span>
+                </div>
+                <div class="deck-remaining-chip" id="physical-deck-count-num">24</div>
+              </div>
+            </div>
+            <div class="deck-caption">
+              <span>Mazo de Robo</span>
+              <span class="deck-ap-cost">(-1 PA)</span>
+            </div>
+          </div>
+
+          <!-- Riel de Cartas Tácticas en Mano (Atril de Madera del Jugador) -->
+          <div class="tactical-hand-cards" id="tactical-cards-hand">
+            <!-- Renderizado dinámico de cartas en app.js con soporte de arrastre visual -->
+          </div>
+
+          <!-- Pila de Descartes Físico 3D -->
+          <div class="physical-discard-container" id="physical-deck-discard" title="Pila de Descartes">
+            <div class="physical-discard-stack">
+              <div class="discard-card-slot">
+                <span class="material-symbols-outlined discard-slot-icon">auto_delete</span>
+                <span class="discard-slot-label">Descartes</span>
+                <div class="discard-remaining-chip" id="physical-discard-count-num">0</div>
+              </div>
+            </div>
+            <div class="deck-caption">
+              <span>Cementerio</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 4. MODAL DE COMBATE TÁCTICO (SISTEMA DE DADOS ESTILO T.E.G. 1v1 A 3v3) -->
+    <div class="modal-overlay" id="combat-modal">
+      <div class="modal-box" style="max-width:580px;">
+        <div class="modal-header">
+          <span class="modal-title">
+            <span class="material-symbols-outlined" style="color:#f06536;">casino</span>
+            <span>Incursión y Combate Táctico (Estilo T.E.G.)</span>
+          </span>
+          <button type="button" class="modal-close-btn" aria-label="Cerrar Combate">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Selector de Rival Objetivo Elegible -->
+          <div style="background:#1e1a17;border:1px solid #42352c;border-radius:8px;padding:0.75rem;margin-bottom:0.75rem;">
+            <label for="combat-target-select" style="font-size:0.75rem;color:#a39287;display:block;margin-bottom:0.35rem;font-weight:600;">
+              1. Seleccionar Rival Hostil (Solo seleccionables si poseen tropas desplegadas):
+            </label>
+            <select id="combat-target-select" style="width:100%;background:#2a201a;border:1px solid #784c24;color:#ffcaa3;padding:0.45rem 0.6rem;border-radius:6px;font-size:0.8rem;outline:none;">
+            </select>
+          </div>
+
+          <!-- Selector de Tropas Atacantes y Defensoras (Regla: 1 tropa = 1 D6, máx 3 D6) -->
+          <div style="background:#171310;border:1px solid #3d3530;border-radius:10px;padding:0.75rem 1rem;margin-bottom:1rem;display:flex;flex-direction:column;gap:0.6rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;">
+              <span style="font-size:0.75rem;color:#d1c2ba;font-weight:700;">Tropas Atacantes a Involucrar (Máx 3 D6):</span>
+              <div class="teg-troop-selector" id="teg-troop-selector">
+                <button type="button" class="btn-troop-choice" data-troops="1">1 Tropa (1 D6)</button>
+                <button type="button" class="btn-troop-choice" data-troops="2">2 Tropas (2 D6)</button>
+                <button type="button" class="btn-troop-choice active" data-troops="3">3+ Tropas (3 D6)</button>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.72rem;color:#a39287;border-top:1px solid rgba(255,255,255,0.06);padding-top:0.4rem;">
+              <span>Defensa Rival Detectada: <strong id="teg-defender-troops-text" style="color:#fca5a5;">4 Tropas (Aporta 3 D6)</strong></span>
+              <span style="color:#ffb59d;">Dados de Ataque: <strong id="teg-attacker-dice-count">3 Dados</strong></span>
+            </div>
+          </div>
+
+          <!-- Arena de Dados T.E.G. (Lanzamiento simultáneo y ordenamiento de mayor a menor) -->
+          <div class="teg-arena-container">
+            <div class="teg-combatant-column player">
+              <span class="teg-team-label" style="color:#ffb59d;">Tus Tropas Atacantes</span>
+              <div class="teg-dice-rack" id="teg-rack-player">
+                <div class="teg-die player" id="p-die-0">-</div>
+                <div class="teg-die player" id="p-die-1">-</div>
+                <div class="teg-die player" id="p-die-2">-</div>
+              </div>
+              <span style="font-size:0.68rem;color:#a39287;">Ordenados de Mayor a Menor</span>
+            </div>
+
+            <div class="teg-vs-divider">VS</div>
+
+            <div class="teg-combatant-column enemy">
+              <span class="teg-team-label" id="teg-enemy-label" style="color:#fca5a5;">Defensa Enemiga</span>
+              <div class="teg-dice-rack" id="teg-rack-enemy">
+                <div class="teg-die enemy" id="e-die-0">-</div>
+                <div class="teg-die enemy" id="e-die-1">-</div>
+                <div class="teg-die enemy" id="e-die-2">-</div>
+              </div>
+              <span style="font-size:0.68rem;color:#a39287;">Ordenados de Mayor a Menor</span>
+            </div>
+          </div>
+
+          <!-- Enfrentamientos Uno a Uno (Comparación directa estilo T.E.G.) -->
+          <div class="teg-clash-panel" id="teg-clash-panel">
+            <div class="teg-clash-header">
+              <span>Resolución de Enfrentamientos (1v1 Directo)</span>
+              <span style="font-size:0.68rem;color:#a39287;">Empates = Sin ventaja</span>
+            </div>
+            <div class="teg-clash-rows" id="teg-clash-rows">
+              <div class="teg-clash-placeholder">Pulsa "Lanzar Dados de Choque" para resolver el combate.</div>
+            </div>
+          </div>
+
+          <!-- Banner de Resultado Global y Consecuencias -->
+          <div id="combat-result-banner" style="background:#1e1a17;border:1px solid #3d3530;border-radius:10px;padding:0.75rem 1rem;text-align:center;font-size:0.8rem;line-height:1.4;">
+            El combate consumirá 1 Punto de Acción (AP) al resolver la tirada.
+          </div>
+
+          <button type="button" class="btn-action btn-primary-action" id="btn-roll-combat" style="padding:0.75rem;justify-content:center;font-size:0.88rem;margin-top:0.6rem;">
+            <span class="material-symbols-outlined">casino</span>
+            <span>¡Lanzar Dados de Choque T.E.G.! (-1 AP)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DE DESGLOSE DE PUNTOS DE VICTORIA (PV EN VIVO) -->
+    <div class="modal-overlay" id="pv-breakdown-modal">
+      <div class="modal-box" style="max-width:480px;">
+        <div class="modal-header">
+          <span class="modal-title">
+            <span class="material-symbols-outlined" style="color:#f59e0b;">emoji_events</span>
+            <span>Desglose de Puntos de Victoria (PV)</span>
+          </span>
+          <button type="button" class="modal-close-btn" aria-label="Cerrar Desglose">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size:0.8rem;color:#d1c2ba;margin-bottom:0.85rem;">
+            En <em>Evolia: El Reino Menor</em> <strong>no existe un límite fijado de PV</strong>. La puntuación total se acumula de acuerdo con el desarrollo integral de tu enjambre:
+          </p>
+
+          <div style="display:flex;flex-direction:column;gap:0.6rem;">
+            <div class="pv-breakdown-row">
+              <div style="display:flex;align-items:center;gap:0.5rem;">
+                <span class="material-symbols-outlined" style="color:#8bc34a;">home</span>
+                <div>
+                  <div style="font-weight:700;color:#eae1dd;">Edificaciones y Cámaras de Nido</div>
+                  <div style="font-size:0.7rem;color:#a39287;">Nivel acumulado de todas las cámaras excavadas</div>
+                </div>
+              </div>
+              <strong id="pv-breakdown-chambers" style="color:#8bc34a;font-size:0.95rem;">+5 PV</strong>
+            </div>
+
+            <div class="pv-breakdown-row">
+              <div style="display:flex;align-items:center;gap:0.5rem;">
+                <span class="material-symbols-outlined" style="color:#38bdf8;">biotech</span>
+                <div>
+                  <div style="font-weight:700;color:#eae1dd;">Mutaciones Genómicas Desbloqueadas</div>
+                  <div style="font-size:0.7rem;color:#a39287;">1 PV por cada rasgo evolutivo asimilado</div>
+                </div>
+              </div>
+              <strong id="pv-breakdown-mutations" style="color:#38bdf8;font-size:0.95rem;">+0 PV</strong>
+            </div>
+
+            <div class="pv-breakdown-row">
+              <div style="display:flex;align-items:center;gap:0.5rem;">
+                <span class="material-symbols-outlined" style="color:#f59e0b;">inventory_2</span>
+                <div>
+                  <div style="font-weight:700;color:#eae1dd;">Recursos Acumulados Sobrantes</div>
+                  <div style="font-size:0.7rem;color:#a39287;">+1 PV cada 10 unidades de recursos (Alimento+Agua+Mat+ADN)</div>
+                </div>
+              </div>
+              <strong id="pv-breakdown-resources" style="color:#f59e0b;font-size:0.95rem;">+4 PV</strong>
+            </div>
+
+            <div class="pv-breakdown-row">
+              <div style="display:flex;align-items:center;gap:0.5rem;">
+                <span class="material-symbols-outlined" style="color:#f06536;">groups</span>
+                <div>
+                  <div style="font-weight:700;color:#eae1dd;">Unidades Vivas Sobrevivientes</div>
+                  <div style="font-size:0.7rem;color:#a39287;">+1 PV cada 15 unidades de población total con vida</div>
+                </div>
+              </div>
+              <strong id="pv-breakdown-population" style="color:#f06536;font-size:0.95rem;">+1 PV</strong>
+            </div>
+
+            <div class="pv-breakdown-row">
+              <div style="display:flex;align-items:center;gap:0.5rem;">
+                <span class="material-symbols-outlined" style="color:#ec4899;">military_tech</span>
+                <div>
+                  <div style="font-weight:700;color:#eae1dd;">Victorias Tácticas Militares</div>
+                  <div style="font-size:0.7rem;color:#a39287;">Incursiones y choques ganados contra rivales</div>
+                </div>
+              </div>
+              <strong id="pv-breakdown-military" style="color:#ec4899;font-size:0.95rem;">+0 PV</strong>
+            </div>
+          </div>
+
+          <div style="margin-top:1rem;padding:0.75rem;background:#2a1f18;border:1px solid #784c24;border-radius:8px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:800;color:#ffb59d;">PUNTUACIÓN TOTAL EN VIVO:</span>
+            <span id="pv-breakdown-total" style="font-size:1.25rem;font-weight:900;color:#f59e0b;">10 PV</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. MODAL DE BITÁCORA -->
+    <div class="modal-overlay" id="logs-modal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <span class="modal-title">
+            <span class="material-symbols-outlined">receipt_long</span>
+            <span>Bitácora de la Colonia</span>
+          </span>
+          <button type="button" class="modal-close-btn" aria-label="Cerrar Bitácora">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="modal-body" id="log-entries-list" style="max-height:400px;"></div>
+      </div>
+    </div>
+
+    <!-- 6. MODAL DE REGLAS -->
+    <div class="modal-overlay" id="rules-modal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <span class="modal-title">
+            <span class="material-symbols-outlined">menu_book</span>
+            <span>Reglamento Táctico 4X</span>
+          </span>
+          <button type="button" class="modal-close-btn" aria-label="Cerrar Reglas">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h4 style="color:#ffb59d;font-weight:700;">1. El Ciclo de Turno y Puntos de Acción (AP)</h4>
+          <p>Dispones de 3 AP por turno para expandirte, marchar legiones, jugar cartas de estrato, recolectar o excavar galerías. Cada turno cuenta con un <strong>temporizador general de 90 segundos</strong> con salto automático de turno al expirar.</p>
+          
+          <h4 style="color:#ffb59d;font-weight:700;">2. Sistema Integral de Cartas en Mano (Robo, Límite Estacional y Canje)</h4>
+          <p>
+            <strong>Las cartas en mano son todo</strong>: son <em>edificios a construir</em> (amplían cámaras de nido y otorgan PV directos), <em>conversión a recursos</em> (savia, agua, grava y ADN), <em>investigaciones genómicas</em> (mutaciones evolutivas del árbol genético con PV) y <em>fuerzas militares</em>.<br><br>
+            • <strong>Robo inicial</strong>: Se roban <strong>2 cartas</strong> automáticamente al inicio de cada turno del jugador.<br>
+            • <strong>Límite de mano</strong>: Al terminar el turno, el jugador debe quedar con <strong>máximo 5 cartas en mano</strong> (a menos que sea <strong>Otoño</strong>, temporada en la cual puede conservar <strong>2 cartas extra</strong> durante ese turno, es decir un límite de 7 cartas). Si tienes exceso de cartas al pasar turno, deberás descartar o canjearlas.<br>
+            • <strong>Coste y Canje por Materiales</strong>: Cada carta tiene su coste de activación en AP y materiales. Además, <strong>se pueden canjear (gastando 1 acción) por su coste de materiales</strong>, convirtiendo la carta en materiales directos para la colonia si necesitas recursos urgentes.
+          </p>
+
+          <h4 style="color:#ffb59d;font-weight:700;">3. Inteligencia Genérica y Privacidad de Estrategia</h4>
+          <p>De tus rivales únicamente puedes observar métricas genéricas: recursos globales estimados, AP restantes y su población total acumulada. Además, recibirás notificaciones en tiempo real cuando un rival ejecute acciones clave (ej. <em>"El jugador X está construyendo"</em>).</p>
+
+          <h4 style="color:#ffb59d;font-weight:700;">4. Sistema de Combate Estilo T.E.G. (1v1 hasta 3v3 Máximo)</h4>
+          <p>
+            El combate se resuelve según las tropas involucradas: <strong>cada tropa aporta 1 dado D6, hasta un máximo de 3 dados por bando</strong> (1 tropa = 1 D6, 2 tropas = 2 D6, 3+ tropas = 3 D6). Ambos jugadores tiran sus dados simultáneamente y los ordenan de mayor a menor.<br>
+            Se comparan uno a uno: el más alto contra el más alto, el segundo contra el segundo, y el tercero si ambos lo tienen. Si los dados son iguales, es un <strong>empate</strong> (nadie saca ventaja). Si un jugador tiene más dados que el rival, los sobrantes quedan sin oposición. El vencedor del combate es quien consiga más enfrentamientos favorables.
+          </p>
+
+          <h4 style="color:#ffb59d;font-weight:700;">5. Puntos de Victoria (Sin Límite de Fin de Juego)</h4>
+          <p>
+            <strong>No hay un límite de 15 PV</strong>. La partida evalúa la dominación acumulada en vivo: se suman los PV de las <strong>edificaciones construidas</strong> (cámaras de nido y mutaciones), los <strong>recursos sobrantes</strong> (1 PV cada 10 unidades de recursos totales), las <strong>unidades que sobrevivan</strong> (1 PV cada 15 unidades vivas) y las <strong>victorias militares</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. MODAL DE BANCO DE PRUEBAS (SANDBOX TEST) -->
+    <div class="modal-overlay" id="test-modal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <span class="modal-title">
+            <span class="material-symbols-outlined" style="color:#f06536;">science</span>
+            <span>Banco de Pruebas y Sandbox</span>
+          </span>
+          <button type="button" class="modal-close-btn" aria-label="Cerrar Test">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p style="color:#a39287;">Utilidades inmediatas para testear mecánicas sin restricciones:</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+            <button type="button" class="btn-action" id="test-btn-boost">
+              <span>Recargar Recursos</span>
+              <span class="badge-tag">Max</span>
+            </button>
+            <button type="button" class="btn-action" id="test-btn-ap">
+              <span>Añadir +3 AP</span>
+              <span class="badge-tag">+3</span>
+            </button>
+            <button type="button" class="btn-action" id="test-btn-draw-2">
+              <span>Robar 2 Cartas</span>
+              <span class="badge-tag">+2</span>
+            </button>
+            <button type="button" class="btn-action" id="test-btn-toggle-autumn">
+              <span id="test-autumn-label">Forzar Otoño (7 máx)</span>
+              <span class="badge-tag">🍂</span>
+            </button>
+            <button type="button" class="btn-action" id="test-btn-unlock-all">
+              <span>Mutar Todo el Árbol</span>
+              <span class="badge-tag">+5 PV</span>
+            </button>
+            <button type="button" class="btn-action" id="test-btn-reset" style="border-color:#ef4444;color:#fca5a5;">
+              <span>Reiniciar Partida</span>
+              <span class="badge-tag">Reset</span>
+            </button>
+          </div>
+          <div style="margin-top:1rem;background:#15110f;border:1px solid #3d3530;padding:0.75rem;border-radius:10px;">
+            <div style="font-weight:700;color:#ffb59d;margin-bottom:0.25rem;">Compatibilidad de Despliegue:</div>
+            <p style="font-size:0.75rem;color:#d1c2ba;">
+              Esta versión está construida 100% en HTML5, CSS3 y JavaScript vanilla con rutas relativas (<code>./style.css</code>, <code>./app.js</code>). Puede abrirse directamente con doble clic (<code>file://</code>) o subirse a la raíz de tu repositorio en GitHub para funcionar al instante en <code>https://redwino.github.io/Evolia-el-reino-menor/</code> sin ningún comando de compilación.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. MODAL DE DESCARTE OBLIGATORIO DE FIN DE TURNO -->
+    <div class="modal-overlay" id="discard-modal">
+      <div class="modal-box" style="max-width:580px;">
+        <div class="modal-header">
+          <span class="modal-title" style="color:#f59e0b;">
+            <span class="material-symbols-outlined">warning</span>
+            <span>Límite de Cartas al Terminar Turno</span>
+          </span>
+          <button type="button" class="modal-close-btn" aria-label="Cerrar Descarte">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="discard-modal-desc" style="font-size:0.85rem;color:#eae1dd;margin-bottom:1rem;line-height:1.45;">
+            Al terminar tu turno debes quedar con un máximo de <strong>5 cartas</strong> en mano (o <strong>7 cartas</strong> en temporada de Otoño).
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;background:#1b1513;padding:0.6rem 0.85rem;border-radius:8px;border:1px solid #3d322b;margin-bottom:1rem;">
+            <span style="font-size:0.8rem;color:#d1c2ba;" id="discard-status-text">Cartas en mano: 6 · Límite: 5 · Exceso: 1</span>
+            <span class="badge-tag" id="discard-season-pill" style="background:#2b1d17;color:#ffb59d;">Temporada Normal</span>
+          </div>
+
+          <div id="discard-cards-list" style="display:flex;flex-direction:column;gap:0.6rem;max-height:300px;overflow-y:auto;padding-right:0.3rem;">
+            <!-- Cartas a descartar dinámicamente -->
+          </div>
+
+          <div style="margin-top:1.25rem;display:flex;justify-content:flex-end;gap:0.75rem;">
+            <button type="button" class="btn-action" id="btn-cancel-discard" style="padding:0.5rem 1rem;">
+              Continuar Turno
+            </button>
+            <button type="button" class="btn-action btn-primary-action" id="btn-confirm-pass-turn" style="padding:0.5rem 1rem;background:#8bc34a;border-color:#8bc34a;color:#182810;font-weight:800;" disabled>
+              <span>Confirmar y Pasar Turno</span>
+              <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. CONTENEDOR DE TOASTS FLOTANTES -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- SCRIPT PRINCIPAL JAVASCRIPT VANILLA -->
+    <script src="./app.js"></script>
   </body>
 </html>
-

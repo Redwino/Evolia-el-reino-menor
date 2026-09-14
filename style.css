@@ -1,0 +1,3374 @@
+/* ==========================================================================
+   EVOLIA: EL REINO MENOR - ESTILOS VISUALES LÚDICOS Y CARICATURESCOS
+   Diseño de Mesa de Juego de Cartas Táctico (Tabletop Playmat & Comic CCG)
+   Compatible con ejecución directa (file://) y GitHub Pages
+   ========================================================================== */
+
+:root {
+  /* Paleta de Mesa de Juego y Tapete */
+  --table-wood-dark: #1e130c;
+  --table-wood-mid: #2e1d13;
+  --table-wood-light: #442a1b;
+  --table-wood-rim: #5c3822;
+  --table-wood-bevel: #805030;
+  
+  --playmat-felt-bg: #102117;
+  --playmat-felt-surface: #15291e;
+  --playmat-felt-card: #1c3326;
+  --playmat-border-stitch: #d4af37;
+  
+  --bg-main: #140e0a;
+  --bg-surface: #221711;
+  --bg-card: #2c1e17;
+  --bg-card-hover: #3d2b21;
+  --border-color: #543928;
+  --border-accent: #785036;
+  
+  /* Colores Caricaturescos Saturados y Cálidos */
+  --primary: #f05a28;
+  --primary-hover: #ff7547;
+  --primary-glow: rgba(240, 90, 40, 0.45);
+  --primary-dark: #b83610;
+  --primary-comic-shadow: #852205;
+  
+  --food-color: #72b01d;
+  --water-color: #00a6fb;
+  --material-color: #f77f00;
+  --dna-color: #b5179e;
+  --vp-color: #ffb703;
+  --threat-color: #e63946;
+
+  --text-main: #fff5ee;
+  --text-muted: #d5c3b8;
+  --text-sub: #9e877a;
+  
+  /* Tipografía Lúdica y Caricaturesca */
+  --font-display: 'Fredoka', 'Cinzel', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  --header-height: 74px;
+  --sidebar-width: 250px;
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-normal: 0.25s ease;
+  
+  /* Sombras y Relieves Cómic 3D */
+  --comic-shadow-sm: 0 3px 0 rgba(0, 0, 0, 0.55);
+  --comic-shadow-md: 0 5px 0 rgba(0, 0, 0, 0.6);
+  --comic-shadow-lg: 0 8px 0 rgba(0, 0, 0, 0.65);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--bg-main);
+  background-image: 
+    radial-gradient(circle at 50% 10%, rgba(240, 90, 40, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, #18110c 0%, #100b08 100%);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+/* Tipografía Lúdica / Cómic */
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+
+/* Iconos de Material Symbols */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  display: inline-block;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+/* =========================================================
+   BARRA SUPERIOR (HEADER): MARCO DE MADERA DE LA MESA
+   ========================================================= */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  background: linear-gradient(180deg, #362215 0%, #25160d 70%, #170d08 100%);
+  border-bottom: 3px solid #5a371e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  z-index: 50;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: #2a1b12;
+  border: 2px solid #5a371e;
+  color: #ffcaa3;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 0 #150c07;
+  transition: var(--transition-fast);
+}
+
+.mobile-menu-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #150c07;
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.brand-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ff7d3c 0%, #d64010 100%);
+  border: 2px solid #ffcaa3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 0 #7e1e03, 0 0 14px rgba(240, 90, 40, 0.5);
+  transform: rotate(-3deg);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.brand-badge:hover .brand-icon {
+  transform: rotate(3deg) scale(1.08);
+}
+
+.brand-titles h1 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff1e5;
+  text-shadow: 0 2px 0 #541905, 0 0 10px rgba(240, 90, 40, 0.4);
+  line-height: 1.1;
+  letter-spacing: 0.03em;
+}
+
+.brand-titles span {
+  font-size: 0.72rem;
+  color: #ffcaa3;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* Tira de Recursos Caricaturescos (Fichas / Tokens de Mesa) */
+.resources-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(180deg, #1b110b 0%, #100a06 100%);
+  padding: 0.35rem 0.75rem;
+  border-radius: 24px;
+  border: 2px solid #4a2e19;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.7), 0 3px 0 rgba(0, 0, 0, 0.3);
+  overflow-x: auto;
+}
+
+.resource-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  white-space: nowrap;
+  padding: 0.2rem 0.55rem;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+  transition: transform 0.15s ease;
+}
+
+.resource-pill:hover {
+  transform: translateY(-1px) scale(1.04);
+}
+
+.resource-pill .res-icon {
+  font-size: 16px;
+}
+
+.res-food {
+  color: #bef264;
+  border-color: rgba(190, 242, 100, 0.3);
+  background: linear-gradient(180deg, #1d3314 0%, #11210b 100%);
+}
+.res-water {
+  color: #7dd3fc;
+  border-color: rgba(125, 211, 252, 0.3);
+  background: linear-gradient(180deg, #102e3b 0%, #0a1c24 100%);
+}
+.res-material {
+  color: #fdba74;
+  border-color: rgba(253, 186, 116, 0.3);
+  background: linear-gradient(180deg, #3b2311 0%, #241407 100%);
+}
+.res-pop {
+  color: #fde047;
+  border-color: rgba(253, 224, 71, 0.3);
+  background: linear-gradient(180deg, #362e10 0%, #211c07 100%);
+}
+.res-dna {
+  color: #f0abfc;
+  border-color: rgba(240, 171, 252, 0.3);
+  background: linear-gradient(180deg, #38153d 0%, #240b27 100%);
+}
+.res-vp {
+  color: #fde68a;
+  border-color: #f59e0b;
+  background: linear-gradient(180deg, #42280d 0%, #281705 100%);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3), 0 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Controles de Turno y Header Derecho */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.ap-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: linear-gradient(180deg, #331f13 0%, #20130a 100%);
+  border: 2px solid #85522b;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  color: #ffe4cc;
+  box-shadow: 0 3px 0 #130a04, 0 0 10px rgba(240, 90, 40, 0.25);
+}
+
+.ap-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.ap-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #3e2617;
+  border: 1px solid #5a371e;
+  transition: all 0.2s ease;
+}
+
+.ap-dot.active {
+  background: radial-gradient(circle at 35% 35%, #fff 0%, #ff7d3c 40%, #c4370c 100%);
+  border-color: #ffe4cc;
+  box-shadow: 0 0 8px #f05a28, 0 0 12px rgba(255, 125, 60, 0.8);
+  transform: scale(1.15);
+}
+
+.btn-pass-turn {
+  background: linear-gradient(180deg, #ff723b 0%, #e04412 100%);
+  color: #fff;
+  border: 2px solid #ffba94;
+  padding: 0.5rem 1.1rem;
+  border-radius: 22px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 4px 0 #7e1e03, 0 6px 14px rgba(0, 0, 0, 0.45);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn-pass-turn:hover {
+  background: linear-gradient(180deg, #ff834f 0%, #f04e1a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 #7e1e03, 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.btn-pass-turn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #7e1e03, 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.btn-icon-square {
+  background: #2c1a11;
+  border: 2px solid #543420;
+  color: #ffcaa3;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 0 #140b07;
+  transition: var(--transition-fast);
+}
+
+.btn-icon-square:hover {
+  background: #3d2417;
+  border-color: #f05a28;
+  color: #fff;
+}
+
+.btn-icon-square:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #140b07;
+}
+
+.btn-test {
+  background: #381f13;
+  border: 2px solid #f05a28;
+  color: #ffe4cc;
+  padding: 0.4rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 3px 0 #170b05;
+  transition: var(--transition-fast);
+}
+
+.btn-test:hover {
+  background: #f05a28;
+  color: #fff;
+}
+
+.btn-test:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #170b05;
+}
+
+/* =========================================================
+   BARRA LATERAL / SIDEBAR: CÓDEX DE JUGADOR DE MADERA
+   ========================================================= */
+.app-sidebar {
+  position: fixed;
+  top: var(--header-height);
+  bottom: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  background: linear-gradient(180deg, #25160e 0%, #1a0e08 100%);
+  border-right: 3px solid #4a2d18;
+  padding: 1.1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 40;
+  box-shadow: 6px 0 25px rgba(0, 0, 0, 0.6);
+  transition: transform var(--transition-normal);
+}
+
+.nav-category-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #d69f7e;
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  padding: 0 0.6rem 0.5rem;
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 12px;
+  color: #c9b3a7;
+  background: #1e110a;
+  border: 2px solid #3d2415;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  box-shadow: 0 3px 0 #100804;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.15s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.nav-item:hover {
+  background: #2c1a10;
+  color: #fff;
+  border-color: #6a3e21;
+  transform: translateY(-1px);
+}
+
+.nav-item:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #100804;
+}
+
+.nav-item.active {
+  background: linear-gradient(180deg, #3d2214 0%, #2c170d 100%);
+  border-color: #f05a28;
+  color: #ffe4cc;
+  box-shadow: 0 3px 0 #802105, 0 0 12px rgba(240, 90, 40, 0.3);
+}
+
+.nav-item.active .material-symbols-outlined {
+  color: #ff7d3c;
+}
+
+.sidebar-season-widget {
+  background: linear-gradient(180deg, #2b1a11 0%, #1c1009 100%);
+  border: 2px solid #5a371e;
+  border-radius: 14px;
+  padding: 0.85rem 0.75rem;
+  text-align: center;
+  box-shadow: 0 4px 0 #100804, inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.season-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  color: #ffcaa3;
+  margin-top: 0.2rem;
+}
+
+.season-desc {
+  font-size: 0.72rem;
+  color: #b59f92;
+  margin-top: 0.25rem;
+  line-height: 1.3;
+}
+
+/* =========================================================
+   ÁREA PRINCIPAL: TAPETE DE MESA DE JUEGO (FELT PLAYMAT)
+   ========================================================= */
+.app-main {
+  margin-left: var(--sidebar-width);
+  margin-top: var(--header-height);
+  padding: 1.5rem;
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  /* Fondo estilo tapete de neopreno con grano de fieltro y luz cenital */
+  background: 
+    radial-gradient(ellipse at 50% 25%, #183321 0%, #102417 55%, #0a170f 100%);
+  background-attachment: fixed;
+  position: relative;
+}
+
+/* Costura decorativa perimetral del tapete de juego */
+.app-main::before {
+  content: '';
+  position: fixed;
+  top: calc(var(--header-height) + 8px);
+  left: calc(var(--sidebar-width) + 8px);
+  right: 8px;
+  bottom: 8px;
+  border: 2px dashed rgba(212, 175, 55, 0.35);
+  border-radius: 18px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Ticker de Estado Superior en el Tapete */
+.match-status-bar {
+  background: linear-gradient(180deg, #22150e 0%, #180e08 100%);
+  border: 2px solid #5a381f;
+  border-radius: 16px;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  box-shadow: 0 4px 0 #0d0704, 0 8px 18px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 5;
+}
+
+.status-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+.badge-tag {
+  background: #2b1a11;
+  border: 1px solid #6b4224;
+  padding: 0.3rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  color: #ffcaa3;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Pestañas / Pantallas del Juego */
+.view-screen {
+  display: none;
+  animation: fadeInPlaymat 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  position: relative;
+  z-index: 5;
+}
+
+.view-screen.active {
+  display: block;
+}
+
+@keyframes fadeInPlaymat {
+  from { opacity: 0; transform: translateY(8px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Grid & Tarjetas Generales en la Mesa */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  background: linear-gradient(180deg, #24160e 0%, #190e08 100%);
+  border: 2px solid #54361e;
+  border-radius: 16px;
+  padding: 1.35rem;
+  position: relative;
+  box-shadow: 0 5px 0 #0d0704, 0 10px 24px rgba(0, 0, 0, 0.6);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #422815;
+  padding-bottom: 0.75rem;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #eae1dd;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-title .material-symbols-outlined {
+  color: var(--primary);
+}
+
+/* PANTALLA 1: MAPA TÁCTICO DE ESTRATO */
+.tactical-map-container {
+  background: #110e0c;
+  border: 1px solid var(--border-accent);
+  border-radius: 14px;
+  height: 520px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.85);
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(45, 34, 28, 0.4) 0%, transparent 70%),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+}
+
+.map-svg-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.map-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform var(--transition-fast);
+}
+
+.map-node:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.node-chit {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
+  transition: var(--transition-fast);
+  color: #fff;
+}
+
+.node-chit.controlled {
+  border-color: var(--primary);
+  background: #3e2217;
+  box-shadow: 0 0 16px var(--primary-glow);
+}
+
+.node-chit.threat {
+  border-color: var(--threat-color);
+  background: #3a1818;
+}
+
+.node-chit.resource {
+  border-color: #38bdf8;
+  background: #172c3a;
+}
+
+.node-name {
+  margin-top: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #eae1dd;
+  background: rgba(18, 15, 13, 0.85);
+  padding: 0.15rem 0.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.node-badges {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+/* Inspector de Nodo */
+.node-inspector {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inspector-stats {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+}
+
+.inspector-stat-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.35rem;
+}
+
+.inspector-stat-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.action-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.btn-action {
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
+  color: var(--text-main);
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: var(--transition-fast);
+}
+
+.btn-action:hover:not(:disabled) {
+  background: #392b24;
+  border-color: var(--primary);
+  color: #ffb59d;
+  transform: translateX(2px);
+}
+
+.btn-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-action.btn-primary-action {
+  background: linear-gradient(135deg, #f06536 0%, #a83812 100%);
+  border: none;
+  color: #fff;
+  box-shadow: 0 2px 10px var(--primary-glow);
+}
+
+.btn-action.btn-primary-action:hover:not(:disabled) {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+/* PANTALLA 2: EL HORMIGUERO / NIDO */
+.nest-strata {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stratum-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.stratum-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.stratum-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffcaa3;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.chambers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.85rem;
+}
+
+.chamber-card {
+  background: rgba(20, 17, 15, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chamber-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #eae1dd;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.chamber-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.chamber-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  font-size: 0.7rem;
+}
+
+/* PANTALLA 3: ÁRBOL GENÉTICO Y MUTACIONES */
+.mutations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.mutation-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  transition: var(--transition-fast);
+}
+
+.mutation-card.unlocked {
+  border-color: var(--dna-color);
+  background: #251b2e;
+  box-shadow: 0 2px 12px rgba(168, 85, 247, 0.15);
+}
+
+.mutation-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mutation-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #eae1dd;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.mutation-card.unlocked .mutation-title {
+  color: #e9d5ff;
+}
+
+.mutation-effect {
+  font-size: 0.75rem;
+  color: #c4b5fd;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+}
+
+/* PANTALLA 4: CASTAS Y LEGIONES */
+.castes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.caste-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.caste-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 0.72rem;
+}
+
+/* MODALES */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 8, 7, 0.85);
+  backdrop-filter: blur(8px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 100;
+}
+
+.modal-overlay.active {
+  display: flex;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.modal-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-accent);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #eae1dd;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modal-close-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  font-size: 0.82rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  line-height: 1.6;
+}
+
+/* Simulador de Combate Modal */
+.dice-arena {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 1.5rem;
+  background: #15110f;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.combatant-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dice-display {
+  width: 70px;
+  height: 70px;
+  border-radius: 14px;
+  background: #2a221d;
+  border: 2px solid var(--border-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dice-display.rolling {
+  animation: diceRoll 0.4s infinite linear;
+}
+
+@keyframes diceRoll {
+  0% { transform: rotate(0deg) scale(0.9); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(0.9); }
+}
+
+.dice-display.player {
+  border-color: var(--primary);
+  color: #ffb59d;
+  background: #3a2217;
+}
+
+.dice-display.enemy {
+  border-color: var(--threat-color);
+  color: #fca5a5;
+  background: #3a1717;
+}
+
+.vs-badge {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #a88a81;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.toast {
+  background: #231d19;
+  border: 1px solid var(--border-accent);
+  border-left: 4px solid var(--primary);
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  color: #eae1dd;
+  font-size: 0.8rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  pointer-events: auto;
+  animation: slideInRight 0.2s ease forwards;
+  max-width: 340px;
+}
+
+/* =========================================================
+   NUEVAS MECÁNICAS: TEMPORIZADOR 90S, MARCADOR PV Y RIVALES
+   ========================================================= */
+
+/* Indicador Global del Turno Actual en la Cabecera */
+.turn-turn-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.turn-turn-badge.player-turn {
+  background: rgba(139, 195, 74, 0.15);
+  border: 1px solid rgba(139, 195, 74, 0.45);
+  color: #bef264;
+}
+
+.turn-turn-badge.rival-turn {
+  background: rgba(240, 101, 54, 0.15);
+  border: 1px solid rgba(240, 101, 54, 0.5);
+  color: #ffcaa3;
+}
+
+.turn-turn-badge .turn-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.turn-turn-badge.player-turn .turn-dot {
+  background: #8bc34a;
+  box-shadow: 0 0 6px #8bc34a;
+  animation: dotPulse 1.4s infinite ease-in-out;
+}
+
+.turn-turn-badge.rival-turn .turn-dot {
+  background: #f06536;
+  box-shadow: 0 0 6px #f06536;
+  animation: dotPulse 1.2s infinite ease-in-out;
+}
+
+/* Temporizador de Turno Único de 90 segundos */
+.turn-timer {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #201915;
+  border: 1px solid #5a3825;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #ffcaa3;
+  font-family: monospace;
+  letter-spacing: 0.05em;
+  transition: var(--transition-fast);
+}
+
+.turn-timer .timer-icon {
+  font-size: 16px;
+  color: var(--primary);
+}
+
+.turn-timer.warning {
+  border-color: #ef4444;
+  color: #fca5a5;
+  background: #331515;
+  animation: timerPulse 1s infinite alternate;
+}
+
+.turn-timer.warning .timer-icon {
+  color: #ef4444;
+}
+
+/* Banner de Turno Rival en Curso (Informa y restringe acciones activas) */
+.turn-waiting-banner {
+  background: linear-gradient(90deg, #241914 0%, #301f18 100%);
+  border: 1px solid #784c24;
+  border-left: 5px solid #f06536;
+  border-radius: 12px;
+  padding: 0.85rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  animation: fadeIn 0.3s ease;
+}
+
+.turn-waiting-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1;
+}
+
+.spin-hourglass {
+  animation: spinSlow 3s infinite ease-in-out;
+}
+
+@keyframes spinSlow {
+  0% { transform: rotate(0deg); }
+  45% { transform: rotate(180deg); }
+  55% { transform: rotate(180deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.btn-skip-ai {
+  background: #3a251b;
+  border: 1px solid #a35d33;
+  color: #ffcaa3;
+  padding: 0.4rem 0.85rem;
+  border-radius: 18px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+  transition: var(--transition-fast);
+}
+
+.btn-skip-ai:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* Bloqueo táctico de acciones durante turno del rival */
+body.rival-turn-active .btn-pass-turn {
+  opacity: 0.5;
+  pointer-events: none;
+  filter: grayscale(0.5);
+  cursor: not-allowed;
+}
+
+body.rival-turn-active .btn-inspector-action,
+body.rival-turn-active .btn-action:not(.test-allowed),
+body.rival-turn-active .btn-caste,
+body.rival-turn-active .btn-mutate,
+body.rival-turn-active [data-attack-rival] {
+  opacity: 0.45 !important;
+  pointer-events: none !important;
+  filter: grayscale(0.6) !important;
+  cursor: not-allowed !important;
+}
+
+body.rival-turn-active .view-screen {
+  position: relative;
+}
+
+@keyframes timerPulse {
+  from { box-shadow: 0 0 4px rgba(239, 68, 68, 0.4); }
+  to { box-shadow: 0 0 12px rgba(239, 68, 68, 0.9); }
+}
+
+/* Notificación de Actividad en Tiempo Real del Rival */
+.rival-live-banner {
+  background: linear-gradient(90deg, rgba(37, 26, 20, 0.95) 0%, rgba(55, 34, 25, 0.9) 100%);
+  border: 1px solid #7c4427;
+  border-left: 4px solid #f06536;
+  border-radius: 10px;
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.3s ease;
+}
+
+.rival-live-banner .banner-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.rival-live-banner .pulse-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #f06536;
+  box-shadow: 0 0 8px #f06536;
+  animation: dotPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes dotPulse {
+  0%, 100% { transform: scale(0.85); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+/* Marcador Lateral de Puntos de Victoria (PV) en Tiempo Real */
+.sidebar-pv-scoreboard {
+  background: #201a16;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.scoreboard-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--vp-color);
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pv-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background: rgba(15, 12, 11, 0.5);
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pv-entry.is-player {
+  border-color: rgba(240, 101, 54, 0.4);
+  background: rgba(45, 27, 20, 0.6);
+}
+
+.pv-entry-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.pv-entry-bar-track {
+  height: 5px;
+  width: 100%;
+  background: #14100e;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.pv-entry-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b 0%, #f06536 100%);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+/* Tarjetas de Inteligencia y Rivales */
+.rivals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.rival-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.rival-card.targetable {
+  border-color: #784c24;
+}
+
+.rival-card.targetable::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #f06536, #ef4444);
+}
+
+.rival-card.immune::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #38bdf8;
+}
+
+.rival-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rival-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.rival-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.rival-name-box h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #eae1dd;
+}
+
+.rival-name-box span {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.rival-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 0.75rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+}
+
+.rival-metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rival-metric-label {
+  font-size: 0.66rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.rival-metric-val {
+  font-weight: 700;
+  color: #eae1dd;
+}
+
+.fog-notice {
+  background: rgba(18, 14, 12, 0.75);
+  border: 1px dashed #524239;
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.72rem;
+  color: #d1c2ba;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.fog-notice .material-symbols-outlined {
+  font-size: 18px;
+  color: #a855f7;
+}
+
+.badge-targetable {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  padding: 0.2rem 0.55rem;
+  border-radius: 12px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.badge-immune {
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #7dd3fc;
+  padding: 0.2rem 0.55rem;
+  border-radius: 12px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.privacy-banner {
+  background: rgba(20, 16, 14, 0.85);
+  border: 1px solid #5a4235;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  color: #d1c2ba;
+  margin-bottom: 1rem;
+}
+
+.privacy-banner .material-symbols-outlined {
+  color: #8bc34a;
+  font-size: 22px;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .mobile-menu-btn {
+    display: flex;
+  }
+  
+  .app-sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .app-sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .app-main {
+    margin-left: 0;
+  }
+  
+  .grid-2col {
+    grid-template-columns: 1fr;
+  }
+  
+  .resources-bar {
+    display: none;
+  }
+}
+
+/* ===================================================
+   SISTEMA DE TURNOS SECUENCIALES Y BLOQUEO DE ACCIONES
+   =================================================== */
+
+/* Banner de Espera Durante Turno de la IA */
+.turn-waiting-banner {
+  display: none;
+  background: linear-gradient(135deg, rgba(38, 24, 18, 0.95) 0%, rgba(20, 15, 12, 0.95) 100%);
+  border: 1px solid #f06536;
+  border-left: 4px solid #f06536;
+  border-radius: 10px;
+  padding: 0.85rem 1.2rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 20px rgba(240, 101, 54, 0.15);
+  animation: slideInDown 0.3s ease;
+}
+
+body.rival-turn-active .turn-waiting-banner {
+  display: block;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.banner-pulse-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #f06536;
+  border-radius: 50%;
+  animation: pulseRival 1.4s infinite ease-in-out;
+  box-shadow: 0 0 8px #f06536;
+}
+
+@keyframes pulseRival {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+    box-shadow: 0 0 14px #f06536;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+}
+
+/* Tarjeta de rival activo en su turno */
+.rival-card.active-turn {
+  border: 1px solid #f06536 !important;
+  box-shadow: 0 0 16px rgba(240, 101, 54, 0.25) !important;
+  background: linear-gradient(180deg, #2a1f1a 0%, #1e1613 100%) !important;
+}
+
+/* Restricción de acciones interactivas durante el turno de la IA */
+/* El jugador puede navegar libremente entre pestañas, inspeccionar nódulos y pensar, pero no ejecutar gastos de AP */
+body.rival-turn-active #btn-pass-turn {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+body.rival-turn-active .btn-primary-action,
+body.rival-turn-active #btn-inspector-march,
+body.rival-turn-active #btn-inspector-gather,
+body.rival-turn-active #btn-inspector-combat,
+body.rival-turn-active #btn-excavate-chamber,
+body.rival-turn-active #btn-feed-queen,
+body.rival-turn-active .caste-card button,
+body.rival-turn-active .mutation-card button,
+body.rival-turn-active [data-attack-rival],
+body.rival-turn-active #btn-draw-card,
+body.rival-turn-active .btn-play-card {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  filter: grayscale(40%);
+  pointer-events: auto; /* Permitir click para disparar aviso informativo al usuario */
+}
+
+/* =========================================================
+   NUEVO TABLERO DE SECTORES TERRITORIALES DE LA COLONIA
+   ========================================================= */
+.colony-territory-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.sector-card,
+.territory-sector-card {
+  background: linear-gradient(180deg, #2b1a11 0%, #1c100a 100%);
+  border: 3px solid #5d3820;
+  border-bottom: 5px solid #160c07;
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease;
+}
+
+.sector-card:hover,
+.territory-sector-card:hover {
+  border-color: #f05a28;
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.65), 0 0 16px rgba(240, 90, 40, 0.35);
+}
+
+.sector-card.selected,
+.territory-sector-card.selected {
+  border-color: #f05a28;
+  border-bottom-color: #9a2b0a;
+  background: linear-gradient(180deg, #381e13 0%, #20100a 100%);
+  box-shadow: 0 0 24px rgba(240, 90, 40, 0.5), 0 8px 16px rgba(0, 0, 0, 0.7);
+}
+
+.sector-card.selected::before,
+.territory-sector-card.selected::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f59e0b, #f05a28);
+}
+
+.sector-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.sector-icon-box,
+.sector-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  background: linear-gradient(135deg, #442817 0%, #29160c 100%);
+  border: 2px solid #7c4b27;
+  color: #ffcaa3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+}
+
+.sector-title-box {
+  flex: 1;
+}
+
+.sector-title-box h4,
+.sector-card-name {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.15rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.sector-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+  background: rgba(14, 8, 4, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 0.5rem 0.65rem;
+}
+
+.sector-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.sector-meta-item .label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #a39287;
+  letter-spacing: 0.03em;
+}
+
+.sector-meta-item .val {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.sector-yield-box {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  border-radius: 8px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.75rem;
+  color: #dcfce7;
+}
+
+.sector-badge {
+  font-size: 0.64rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* =========================================================
+   MANO TÁCTICA DE CARTAS (ROBADAS POR TURNO)
+   ========================================================= */
+.tactical-hand-section {
+  background: #140f0c;
+  border: 1px solid var(--border-accent);
+}
+
+/* =========================================================
+   ESTACIÓN DE MESA: ATRIL DE MANO, MAZO 3D Y CEMENTERIO
+   ========================================================= */
+.tabletop-hand-dock {
+  background: linear-gradient(180deg, #2b1a11 0%, #1a0f0a 100%);
+  border: 3px solid #5a381f;
+  border-top: 4px solid #85532d;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -10px 35px rgba(0, 0, 0, 0.8), inset 0 2px 0 rgba(255, 255, 255, 0.12);
+  margin-top: 1.5rem;
+  padding-bottom: 0.85rem;
+  position: relative;
+  z-index: 30;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tabletop-hand-dock.is-minimized {
+  padding-bottom: 0;
+}
+
+.tabletop-hand-dock.is-minimized .tabletop-board-deck-row,
+.tabletop-hand-dock.is-minimized .hand-limit-alert {
+  display: none !important;
+}
+
+.hand-dock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.8rem 1.25rem;
+  background: linear-gradient(180deg, rgba(34, 20, 13, 0.85) 0%, rgba(20, 11, 7, 0.95) 100%);
+  border-bottom: 2px solid #4a2c17;
+  border-radius: 17px 17px 0 0;
+}
+
+.hand-dock-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.btn-toggle-hand {
+  background: #25150c;
+  border: 2px solid #5a371e;
+  color: #ffcaa3;
+  border-radius: 10px;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.76rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 2px 0 #120904;
+  transition: all var(--transition-fast);
+}
+
+.btn-toggle-hand:hover {
+  background: #3d2315;
+  border-color: #f05a28;
+  color: #fff;
+}
+
+.hand-dock-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 800;
+  font-size: 1rem;
+  color: #fff1e5;
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 0 #4a1c0b;
+}
+
+.hand-dock-hint {
+  font-size: 0.74rem;
+  color: #d1b8ab;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 0.25rem 0.65rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hand-dock-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+/* Badges Lúdicos / Caricaturescos */
+.comic-badge-deck {
+  background: #331e13;
+  border-color: #8c572e;
+  color: #ffe4cc;
+}
+.comic-badge-hand {
+  background: #172c1e;
+  border-color: #2e7343;
+  color: #bef264;
+}
+.comic-badge-season {
+  background: #362410;
+  border-color: #92581a;
+  color: #fde68a;
+}
+.comic-badge-discard {
+  background: #251613;
+  border-color: #633328;
+  color: #fca5a5;
+}
+
+.btn-cartoon-draw {
+  background: linear-gradient(180deg, #ff723b 0%, #d83d0d 100%);
+  color: #fff;
+  border: 2px solid #ffba94;
+  padding: 0.35rem 0.85rem;
+  border-radius: 18px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 3px 0 #7e1e03;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn-cartoon-draw:hover {
+  background: linear-gradient(180deg, #ff8450 0%, #eb4715 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 0 #7e1e03;
+}
+
+.btn-cartoon-draw:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #7e1e03;
+}
+
+/* Fila de Mesa: Mazo 3D + Riel de Mano + Pila de Descartes */
+.tabletop-board-deck-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.85rem 1.25rem 0.25rem;
+}
+
+/* =========================================================
+   MAZO FÍSICO 3D (DRAW DECK EN PERSPECTIVA)
+   ========================================================= */
+.physical-deck-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.physical-deck-container:hover {
+  transform: translateY(-4px) scale(1.03);
+}
+
+.physical-deck-container:active {
+  transform: translateY(2px) scale(0.98);
+}
+
+.physical-deck-stack {
+  position: relative;
+  width: 95px;
+  height: 135px;
+}
+
+.deck-card-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: #170d08;
+  border: 1px solid #3d2315;
+}
+
+.deck-card-layer.layer-deep {
+  transform: translate(6px, 6px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+}
+
+.deck-card-layer.layer-mid {
+  transform: translate(3px, 3px);
+  background: #25160d;
+  border-color: #5a371e;
+}
+
+.deck-card-face-top {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #442416 0%, #29140c 50%, #1c0c06 100%);
+  border: 2px solid #d4af37;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(212, 175, 55, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card-back-pattern {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px dashed rgba(212, 175, 55, 0.5);
+  border-radius: 7px;
+  padding: 0.6rem 0.5rem;
+  width: 82%;
+  height: 86%;
+  background: radial-gradient(circle at center, #351a0e 0%, #1a0b06 100%);
+}
+
+.card-back-sigil {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff7d3c 0%, #a82e0a 100%);
+  border: 2px solid #ffd479;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 125, 60, 0.6);
+}
+
+.card-back-sigil .material-symbols-outlined {
+  font-size: 22px;
+}
+
+.card-back-label {
+  font-size: 0.72rem;
+  font-weight: 900;
+  font-family: var(--font-display);
+  color: #ffd479;
+  letter-spacing: 0.12em;
+  text-shadow: 0 1px 2px #000;
+}
+
+.deck-remaining-chip {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  background: #f05a28;
+  color: #fff;
+  border: 1px solid #ffcaa3;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  padding: 0.1rem 0.45rem;
+  box-shadow: 0 2px 0 #7e1e03;
+}
+
+.deck-caption {
+  font-size: 0.72rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  color: #ffe4cc;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.deck-ap-cost {
+  color: #f05a28;
+  font-size: 0.68rem;
+}
+
+/* =========================================================
+   PILA DE DESCARTES FÍSICA (CEMENTERIO)
+   ========================================================= */
+.physical-discard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.physical-discard-container:hover {
+  transform: translateY(-3px);
+}
+
+.physical-discard-stack {
+  width: 95px;
+  height: 135px;
+  border: 2px dashed #6b432a;
+  border-radius: 10px;
+  background: rgba(18, 10, 6, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.8);
+  position: relative;
+}
+
+.discard-card-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  color: #8c5e46;
+}
+
+.discard-slot-icon {
+  font-size: 26px;
+}
+
+.discard-slot-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+}
+
+.discard-remaining-chip {
+  background: #381f18;
+  border: 1px solid #7a3a2a;
+  color: #fca5a5;
+  border-radius: 10px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  padding: 0.1rem 0.4rem;
+}
+
+/* =========================================================
+   RIEL DE CARTAS EN MANO (ATRIL DE MADERA Y TERCIOPELO)
+   ========================================================= */
+.tactical-hand-cards {
+  flex: 1;
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.6rem 0.75rem 0.9rem;
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-behavior: smooth;
+  min-height: 290px;
+  align-items: stretch;
+  background: rgba(15, 9, 5, 0.45);
+  border: 2px solid #442a18;
+  border-radius: 16px;
+  box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.6);
+}
+
+.tactical-hand-cards::-webkit-scrollbar {
+  height: 8px;
+}
+
+.tactical-hand-cards::-webkit-scrollbar-track {
+  background: #190e09;
+  border-radius: 4px;
+}
+
+.tactical-hand-cards::-webkit-scrollbar-thumb {
+  background: #5a3822;
+  border-radius: 4px;
+}
+
+.tactical-hand-cards::-webkit-scrollbar-thumb:hover {
+  background: #f05a28;
+}
+
+/* =========================================================
+   CARTAS TÁCTICAS COLECIONABLES (ESTILO CÓMIC / CCG FÍSICO)
+   ========================================================= */
+.tactical-card {
+  flex: 0 0 220px;
+  width: 220px;
+  background: linear-gradient(180deg, #fbf7f0 0%, #f2e9dc 60%, #e6d8c5 100%);
+  border: 3px solid #633a20;
+  border-radius: 16px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 
+    0 6px 0 #3a2012,
+    0 10px 20px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.tactical-card:hover {
+  transform: translateY(-14px) scale(1.04) rotate(-1deg);
+  box-shadow: 
+    0 10px 0 #3a2012,
+    0 22px 30px rgba(0, 0, 0, 0.7),
+    0 0 16px rgba(240, 90, 40, 0.5);
+  border-color: #f05a28;
+  z-index: 40;
+}
+
+.tactical-card:active {
+  cursor: grabbing;
+}
+
+/* Categorías Temáticas con Marcos y Banners Cómic */
+.tactical-card.building,
+.tactical-card.type-tactical {
+  border-color: #2b6e3b;
+  border-top: 5px solid #22c55e;
+}
+.tactical-card.building:hover {
+  box-shadow: 0 10px 0 #1b4725, 0 22px 30px rgba(0, 0, 0, 0.7), 0 0 18px rgba(34, 197, 94, 0.5);
+}
+
+.tactical-card.research,
+.tactical-card.type-evolution {
+  border-color: #70269c;
+  border-top: 5px solid #a855f7;
+}
+.tactical-card.research:hover {
+  box-shadow: 0 10px 0 #4a1568, 0 22px 30px rgba(0, 0, 0, 0.7), 0 0 18px rgba(168, 85, 247, 0.5);
+}
+
+.tactical-card.conversion,
+.tactical-card.type-economy {
+  border-color: #0369a1;
+  border-top: 5px solid #0ea5e9;
+}
+.tactical-card.conversion:hover {
+  box-shadow: 0 10px 0 #024368, 0 22px 30px rgba(0, 0, 0, 0.7), 0 0 18px rgba(14, 165, 233, 0.5);
+}
+
+.tactical-card.military,
+.tactical-card.type-military {
+  border-color: #991b1b;
+  border-top: 5px solid #ef4444;
+}
+.tactical-card.military:hover {
+  box-shadow: 0 10px 0 #611111, 0 22px 30px rgba(0, 0, 0, 0.7), 0 0 18px rgba(239, 68, 68, 0.5);
+}
+
+/* Estado de Arrastre en la Mano */
+.tactical-card.is-dragging {
+  opacity: 0.35;
+  border: 3px dashed #f05a28 !important;
+  transform: scale(0.95);
+  filter: grayscale(0.6);
+}
+
+.tactical-card.is-selected-for-play {
+  border-color: #eab308 !important;
+  box-shadow: 0 0 24px rgba(234, 179, 8, 0.75) !important;
+  transform: translateY(-16px) scale(1.05);
+  animation: cardSelectedPulse 1.2s infinite;
+}
+
+@keyframes cardSelectedPulse {
+  0%, 100% { border-color: #eab308; }
+  50% { border-color: #fef08a; }
+}
+
+/* Top bar de la carta: Mana Gem de AP + Tipo + Costes */
+.card-top-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.45rem;
+  gap: 0.35rem;
+}
+
+.card-type-tag {
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-family: var(--font-display);
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.card-type-tag.economy,
+.card-type-tag.conversion { background: #0284c7; color: #fff; border: 1px solid #38bdf8; }
+.card-type-tag.military { background: #dc2626; color: #fff; border: 1px solid #f87171; }
+.card-type-tag.evolution,
+.card-type-tag.research { background: #9333ea; color: #fff; border: 1px solid #c084fc; }
+.card-type-tag.tactical,
+.card-type-tag.building { background: #16a34a; color: #fff; border: 1px solid #4ade80; }
+
+/* Chips de costes */
+.card-cost-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.cost-chip {
+  font-size: 0.65rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  padding: 0.15rem 0.4rem;
+  border-radius: 10px;
+  white-space: nowrap;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.cost-chip.chip-ap { background: #ff723b; color: #fff; border: 1px solid #ffba94; }
+.cost-chip.chip-mat { background: #d97706; color: #fff; border: 1px solid #fde68a; }
+.cost-chip.chip-food { background: #65a30d; color: #fff; border: 1px solid #bef264; }
+.cost-chip.chip-water { background: #0284c7; color: #fff; border: 1px solid #7dd3fc; }
+.cost-chip.chip-dna { background: #9333ea; color: #fff; border: 1px solid #f0abfc; }
+.cost-chip.chip-capacity { background: #4d7c0f; color: #fff; border: 1px solid #a3e635; }
+.cost-chip.chip-unique-done { background: #dc2626; color: #fff; border: 1px solid #fca5a5; }
+
+/* Marco de Arte Cómic de la Carta */
+.card-art-box {
+  height: 72px;
+  background: radial-gradient(circle at center, #422a1c 0%, #20130c 100%);
+  border-radius: 12px;
+  border: 2px solid #5a3822;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.45rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-art-box::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.card-art-box .material-symbols-outlined {
+  font-size: 38px !important;
+  color: #ffcaa3 !important;
+  filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.6));
+}
+
+.card-title-text {
+  font-family: var(--font-display);
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: #2b1509;
+  line-height: 1.2;
+  margin-bottom: 0.3rem;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.card-effect-desc {
+  font-size: 0.74rem;
+  color: #452a1a;
+  line-height: 1.35;
+  margin-bottom: 0.45rem;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(99, 58, 32, 0.2);
+  border-radius: 8px;
+  padding: 0.35rem 0.45rem;
+  font-weight: 600;
+}
+
+.card-exchange-pill {
+  font-size: 0.68rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  background: #173822;
+  color: #bef264;
+  padding: 0.15rem 0.5rem;
+  border-radius: 12px;
+  border: 1px solid #34d399;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.card-actions-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: auto;
+}
+
+.card-actions-row {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.btn-play-card {
+  flex: 1;
+  background: linear-gradient(180deg, #ff723b 0%, #d83d0d 100%);
+  color: #fff;
+  border: 2px solid #ffba94;
+  border-radius: 10px;
+  padding: 0.45rem 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  cursor: pointer;
+  box-shadow: 0 3px 0 #7e1e03;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.btn-play-card:hover:not(:disabled) {
+  background: linear-gradient(180deg, #ff8450 0%, #eb4715 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 0 #7e1e03;
+}
+
+.btn-play-card:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #7e1e03;
+}
+
+.btn-play-card.btn-already-done {
+  background: #3b2b2b;
+  border-color: #694a4a;
+  color: #fca5a5;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.btn-exchange-card {
+  flex: 1;
+  background: #173822;
+  border: 1px solid #34d399;
+  color: #bef264;
+  border-radius: 8px;
+  padding: 0.3rem 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  cursor: pointer;
+  box-shadow: 0 2px 0 #0d2114;
+  transition: transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.btn-exchange-card:hover:not(:disabled) {
+  background: #235434;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.btn-exchange-card:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.btn-discard-card {
+  background: #2d1b17;
+  border: 1px solid #6e392f;
+  color: #fca5a5;
+  border-radius: 8px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #140907;
+  transition: transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-discard-card:hover {
+  background: #4a241d;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.btn-discard-card:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* =========================================================
+   FANTASMA VISUAL FLOTANTE DURANTE EL ARRASTRE (DRAG AVATAR)
+   ========================================================= */
+.card-drag-avatar {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  width: 215px;
+  background: linear-gradient(180deg, #fbf7f0 0%, #f0e6d6 100%);
+  border: 3px solid #f05a28;
+  border-radius: 16px;
+  padding: 0.85rem;
+  box-shadow: 0 24px 45px rgba(0, 0, 0, 0.85), 0 0 30px rgba(240, 90, 40, 0.6);
+  transform: translate(-50%, -50%) rotate(5deg) scale(1.08);
+  opacity: 0.98;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  color: #2b1509;
+  user-select: none;
+  transition: transform 0.05s ease-out;
+}
+
+.card-drag-avatar.category-building {
+  border-color: #22c55e;
+  box-shadow: 0 24px 45px rgba(0, 0, 0, 0.85), 0 0 30px rgba(34, 197, 94, 0.6);
+}
+
+.card-drag-avatar.category-research {
+  border-color: #a855f7;
+  box-shadow: 0 24px 45px rgba(0, 0, 0, 0.85), 0 0 30px rgba(168, 85, 247, 0.6);
+}
+
+.card-drag-avatar.category-conversion {
+  border-color: #0ea5e9;
+  box-shadow: 0 24px 45px rgba(0, 0, 0, 0.85), 0 0 30px rgba(14, 165, 233, 0.6);
+}
+
+.card-drag-avatar.category-military {
+  border-color: #ef4444;
+  box-shadow: 0 24px 45px rgba(0, 0, 0, 0.85), 0 0 30px rgba(239, 68, 68, 0.6);
+}
+
+/* =========================================================
+   ZONAS TÁCTICAS DE DESPLIEGUE EN EL TABLERO (DROP ZONES)
+   ========================================================= */
+.tabletop-drop-zone {
+  background: linear-gradient(90deg, rgba(38, 22, 14, 0.9) 0%, rgba(26, 14, 9, 0.9) 100%);
+  border: 3px dashed #6b432a;
+  border-radius: 16px;
+  padding: 0.85rem 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 0 #100804, inset 0 0 15px rgba(0, 0, 0, 0.6);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.tabletop-drop-zone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(240, 90, 40, 0.12) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.tabletop-drop-zone.drop-zone-active {
+  border-color: #f05a28;
+  background: linear-gradient(90deg, rgba(58, 28, 17, 0.95) 0%, rgba(38, 18, 10, 0.95) 100%);
+  box-shadow: 0 0 24px rgba(240, 90, 40, 0.45);
+  animation: dropZoneBreathe 1.5s infinite;
+}
+
+.tabletop-drop-zone.drop-zone-active::before {
+  opacity: 1;
+}
+
+.tabletop-drop-zone.drop-zone-hover {
+  border-color: #bef264 !important;
+  background: linear-gradient(90deg, rgba(30, 60, 25, 0.95) 0%, rgba(18, 40, 15, 0.95) 100%) !important;
+  box-shadow: 0 0 32px rgba(190, 242, 100, 0.65) !important;
+  transform: scale(1.02);
+}
+
+@keyframes dropZoneBreathe {
+  0%, 100% { border-color: #f05a28; }
+  50% { border-color: #ff916a; }
+}
+
+.drop-zone-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #2b1c15;
+  border: 1px solid #784c24;
+  color: #ffcaa3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.drop-zone-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.drop-zone-text strong {
+  font-size: 0.85rem;
+  color: #eae1dd;
+  font-family: var(--font-display);
+}
+
+.drop-zone-text span {
+  font-size: 0.73rem;
+  color: #a39287;
+  line-height: 1.35;
+}
+
+.drop-zone-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #ffcaa3;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid #784c24;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* Efectos al arrastrar sobre Celdas de la Colonia */
+.colony-cell.hover-drop-active {
+  background: #1f3b25 !important;
+  border: 2px solid #a3e635 !important;
+  box-shadow: 0 0 24px rgba(163, 230, 53, 0.7) !important;
+  transform: scale(1.06) !important;
+  z-index: 20;
+}
+
+.colony-cell.hover-drop-invalid {
+  border: 2px solid #ef4444 !important;
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.5) !important;
+  cursor: not-allowed !important;
+}
+
+/* Sectores del Mapa como Drop Targets para Cartas Militares */
+.sector-card.sector-drop-target {
+  border: 2px dashed #f06536 !important;
+  box-shadow: 0 0 16px rgba(240, 101, 54, 0.4) !important;
+  animation: dropZoneBreathe 1.5s infinite;
+}
+
+.sector-card.sector-drop-hover {
+  border: 2px solid #bef264 !important;
+  box-shadow: 0 0 28px rgba(190, 242, 100, 0.6) !important;
+  transform: scale(1.03) !important;
+  z-index: 15;
+}
+
+.hand-limit-alert {
+  background: #2c1a12;
+  border: 1px solid #f59e0b;
+  color: #fde68a;
+  border-radius: 8px;
+  padding: 0.65rem 0.9rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.hand-empty-hint {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: #7a685e;
+  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px dashed #3a2b22;
+}
+
+/* Modal de Descarte de Fin de Turno */
+.discard-card-item {
+  background: #1b1614;
+  border: 1px solid #3d322b;
+  border-radius: 8px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.discard-card-item.building { border-left: 3px solid #f59e0b; }
+.discard-card-item.research { border-left: 3px solid #06b6d4; }
+.discard-card-item.conversion { border-left: 3px solid #10b981; }
+.discard-card-item.military { border-left: 3px solid #f06536; }
+
+/* =========================================================
+   COMBATE TÁCTICO ESTILO T.E.G. (1v1 A 3v3 MÁXIMO)
+   ========================================================= */
+.teg-troop-selector {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.btn-troop-choice {
+  background: #251c16;
+  border: 1px solid #4a382e;
+  color: #c4b5ac;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-troop-choice:hover {
+  border-color: #8c5d3a;
+  color: #eae1dd;
+}
+
+.btn-troop-choice.active {
+  background: #f06536;
+  border-color: #f06536;
+  color: #fff;
+  box-shadow: 0 0 8px rgba(240, 101, 54, 0.4);
+}
+
+.teg-arena-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #130f0d;
+  border: 1px solid #3d3129;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.85rem;
+}
+
+.teg-combatant-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.teg-team-label {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.teg-dice-rack {
+  display: flex;
+  gap: 0.5rem;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+}
+
+.teg-die {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 900;
+  background: #fbf7f0;
+  border: 3px solid #332014;
+  border-bottom: 5px solid #1c1008;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.55);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  user-select: none;
+}
+
+.teg-die.player {
+  background: linear-gradient(135deg, #fed7aa 0%, #fb923c 100%);
+  border: 3px solid #ea580c;
+  border-bottom: 5px solid #9a3412;
+  color: #431407;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.teg-die.enemy {
+  background: linear-gradient(135deg, #fecaca 0%, #f87171 100%);
+  border: 3px solid #dc2626;
+  border-bottom: 5px solid #991b1b;
+  color: #450a0a;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.teg-die.empty {
+  opacity: 0.35;
+  background: #1c130d;
+  border: 2px dashed #4d3322;
+  border-bottom-width: 2px;
+  color: #665248;
+  box-shadow: none;
+}
+
+.teg-die.rolling {
+  animation: diceRoll 0.35s infinite linear;
+}
+
+.teg-vs-divider {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #8a7065;
+  padding: 0 0.75rem;
+}
+
+/* Panel de enfrentamientos 1 contra 1 */
+.teg-clash-panel {
+  background: #181310;
+  border: 1px solid #3d3129;
+  border-radius: 10px;
+  padding: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.teg-clash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #d1c2ba;
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.35rem;
+}
+
+.teg-clash-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.teg-clash-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #201814;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.teg-clash-left, .teg-clash-right {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.teg-clash-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+.teg-clash-num.player {
+  background: #3e2217;
+  border: 1px solid #f06536;
+  color: #ffcaa3;
+}
+
+.teg-clash-num.enemy {
+  background: #3a1616;
+  border: 1px solid #ef4444;
+  color: #fca5a5;
+}
+
+.teg-clash-status {
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.teg-clash-status.win {
+  background: rgba(139, 195, 74, 0.2);
+  color: #bef264;
+  border: 1px solid rgba(139, 195, 74, 0.4);
+}
+
+.teg-clash-status.loss {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.teg-clash-status.tie {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fde68a;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.teg-clash-status.no-opp {
+  background: rgba(255, 255, 255, 0.05);
+  color: #a39287;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.teg-clash-placeholder {
+  text-align: center;
+  color: #7a685e;
+  font-size: 0.75rem;
+  padding: 0.75rem;
+}
+
+/* =========================================================
+   MODAL DE DESGLOSE DE PUNTOS DE VICTORIA (PV)
+   ========================================================= */
+.pv-breakdown-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1c1613;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+}
+
+/* =========================================================
+   COSTES DETALLADOS EN CARTAS ROBADAS
+   ========================================================= */
+.card-cost-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.cost-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 0.15rem 0.45rem;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  line-height: 1.2;
+}
+
+.cost-chip.chip-ap {
+  background: #2b1c15;
+  border-color: #f06536;
+  color: #ffcaa3;
+}
+
+.cost-chip.chip-food {
+  background: #192716;
+  border-color: #84cc16;
+  color: #bef264;
+}
+
+.cost-chip.chip-water {
+  background: #132433;
+  border-color: #0284c7;
+  color: #7dd3fc;
+}
+
+.cost-chip.chip-mat {
+  background: #2d1c10;
+  border-color: #b45309;
+  color: #fde68a;
+}
+
+.cost-chip.chip-dna {
+  background: #2c163b;
+  border-color: #a855f7;
+  color: #e9d5ff;
+}
+
+.cost-chip.chip-capacity {
+  background: #1b2024;
+  border-color: #475569;
+  color: #cbd5e1;
+}
+
+.cost-chip.chip-unique-done {
+  background: #2a1520;
+  border-color: #e11d48;
+  color: #fda4af;
+  font-weight: 700;
+}
+
+/* =========================================================
+   BANNERS DE COLOCACIÓN FÍSICA Y TRÁNSITO
+   ========================================================= */
+.colony-placement-banner {
+  background: linear-gradient(90deg, #2b1810 0%, #1c130e 100%);
+  border: 1px solid #f06536;
+  border-radius: 10px;
+  padding: 0.85rem 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 15px rgba(240, 101, 54, 0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+.colony-transit-banner {
+  background: linear-gradient(90deg, #13222d 0%, #0d171e 100%);
+  border: 1px solid #38bdf8;
+  border-radius: 10px;
+  padding: 0.85rem 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+.placement-pulse-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #3a1e14;
+  border: 1px solid #f06536;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  animation: pulseGlow 1.8s infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(240, 101, 54, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(240, 101, 54, 0); }
+}
+
+/* =========================================================
+   TABLERO FÍSICO DE LA COLONIA (GRID SUBTERRÁNEO TIPO BOARD GAME)
+   ========================================================= */
+.colony-grid-wrapper {
+  overflow-x: auto;
+  padding: 0.75rem 0.25rem;
+}
+
+.colony-physical-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(138px, 1fr));
+  gap: 0.85rem;
+  background: radial-gradient(ellipse at center, #26160d 0%, #170d07 100%);
+  padding: 1.25rem;
+  border-radius: 20px;
+  border: 4px solid #5a371e;
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.75), 0 8px 24px rgba(0, 0, 0, 0.65);
+  min-width: 720px;
+  position: relative;
+}
+
+/* Celda de la Colonia */
+.colony-cell {
+  position: relative;
+  min-height: 135px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+
+/* Celda vacía (Cavidad de tablero troquelado) */
+.colony-cell.empty {
+  background: #140b07;
+  border: 2px dashed #422818;
+  border-radius: 14px;
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.8);
+  align-items: center;
+  justify-content: center;
+  color: #785a48;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.colony-cell.empty .empty-coords {
+  font-size: 0.64rem;
+  color: #614636;
+  margin-top: 0.25rem;
+}
+
+/* Celda válida para colocación adyacente */
+.colony-cell.empty.placement-valid {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(20, 83, 45, 0.25) 100%);
+  border: 3px dashed #22c55e;
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.4), inset 0 0 12px rgba(34, 197, 94, 0.2);
+  cursor: pointer;
+  color: #bef264;
+  animation: cellPulse 1.4s infinite alternate ease-in-out;
+}
+
+.colony-cell.empty.placement-valid:hover {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.3) 0%, rgba(20, 83, 45, 0.45) 100%);
+  border-color: #86efac;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.55);
+}
+
+@keyframes cellPulse {
+  0% { border-color: #22c55e; box-shadow: 0 0 12px rgba(34, 197, 94, 0.3); }
+  100% { border-color: #bef264; box-shadow: 0 0 20px rgba(190, 242, 100, 0.6); }
+}
+
+.colony-cell.empty.placement-invalid {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Celda con Edificio Construido (Ficha de Cartón Grueso Troquelada) */
+.colony-cell.has-building {
+  background: linear-gradient(180deg, #382216 0%, #26160e 100%);
+  border: 3px solid #6c4224;
+  border-bottom: 5px solid #180c06;
+  border-radius: 14px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.colony-cell.has-building:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.65);
+}
+
+.colony-cell.has-building.building-capital {
+  border: 3px solid #f05a28;
+  border-bottom: 5px solid #8c2506;
+  background: linear-gradient(160deg, #3d1c10 0%, #251009 100%);
+  box-shadow: 0 6px 16px rgba(240, 90, 40, 0.35), inset 0 1px 0 rgba(255, 220, 180, 0.2);
+}
+
+.colony-cell.has-building.transit-origin {
+  border: 3px solid #0ea5e9 !important;
+  border-bottom: 5px solid #0369a1 !important;
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.65) !important;
+}
+
+.colony-cell.has-building.transit-target-valid {
+  border: 3px solid #22c55e !important;
+  border-bottom: 5px solid #15803d !important;
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.55) !important;
+  cursor: pointer;
+  animation: cellPulse 1.4s infinite alternate ease-in-out;
+}
+
+.colony-cell.has-building.transit-target-invalid {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.colony-cell-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.colony-cell-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #442817 0%, #29160c 100%);
+  border: 2px solid #7c4b27;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffcaa3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.colony-cell-title {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.25;
+  margin-bottom: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Indicador de Tropas y Albergue (Meeple Token) */
+.colony-cell-troops {
+  background: rgba(14, 8, 4, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 0.3rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.45rem;
+}
+
+.colony-troops-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #ffcaa3;
+}
+
+.colony-capacity-bar {
+  width: 100%;
+  height: 5px;
+  background: #24140c;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.colony-capacity-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b, #f05a28);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.colony-cell-actions {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: auto;
+}
+
+.btn-cell-transit {
+  flex: 1;
+  background: #0c4a6e;
+  border: 1px solid #38bdf8;
+  border-bottom: 2px solid #0369a1;
+  color: #e0f2fe;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 0.25rem 0.45rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  transition: transform 0.1s ease;
+}
+
+.btn-cell-transit:hover:not(:disabled) {
+  background: #0284c7;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.btn-cell-station {
+  background: #3e2413;
+  border: 1px solid #8c5228;
+  border-bottom: 2px solid #201007;
+  color: #ffcaa3;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 0.25rem 0.45rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease;
+}
+
+.btn-cell-station:hover:not(:disabled) {
+  background: #f05a28;
+  border-color: #f05a28;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Indicadores visuales de túnel de conexión */
+.cell-tunnel-badge {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #bef264;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  padding: 0.15rem 0.45rem;
+  border-radius: 12px;
+}
+
+/* =========================================================
+   PANEL DE INVESTIGACIONES Y BONOS ACTIVOS
+   ========================================================= */
+.active-bonuses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.active-bonus-item {
+  background: #1f1429;
+  border: 1px solid #6b21a8;
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  box-shadow: 0 2px 8px rgba(107, 33, 168, 0.2);
+  transition: transform var(--transition-fast);
+}
+
+.active-bonus-item:hover {
+  transform: translateY(-2px);
+  border-color: #a855f7;
+}
+
+.bonus-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #3b1754;
+  border: 1px solid #9333ea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d8b4fe;
+  flex-shrink: 0;
+}
+
+.bonus-content {
+  flex: 1;
+}
+
+.bonus-name {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #f3e8ff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.bonus-effect-text {
+  font-size: 0.74rem;
+  color: #c084fc;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.bonus-rule-tag {
+  font-size: 0.62rem;
+  color: #a855f7;
+  margin-top: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.empty-bonuses-notice {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  color: #a78bfa;
+  font-size: 0.8rem;
+  background: rgba(168, 85, 247, 0.05);
+  border: 1px dashed rgba(168, 85, 247, 0.2);
+  border-radius: 8px;
+}
+
